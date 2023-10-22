@@ -3,12 +3,7 @@ guid: 70a8955c96fae26439fb0e8fb1bb0743
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Akai_MAT
-    second: {fileID: 1165080902808173757, guid: 4830a7bec439e364abda532c12648d1d, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
