@@ -1,3 +1,4 @@
+using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,10 @@ public class PlayerLogic : MonoBehaviour
     public AudioClip StepAudio;
     public AudioClip DeathAudio;
     AudioSource PlayerAudio;
+    bool AIMMode = false;
     public Animator anim;
     public float Hitpoint;
-    private bool isWalking = false;
+    // private bool isWalking = false;
 
     void Start()
     {
@@ -20,6 +22,8 @@ public class PlayerLogic : MonoBehaviour
 
     void Update()
     {
+        EquipWeapon();
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             PlayerGetHit(100f);
@@ -53,5 +57,28 @@ public class PlayerLogic : MonoBehaviour
         Debug.Log("Step");
         PlayerAudio.clip = StepAudio;
         PlayerAudio.Play();
+    }
+
+    public void equip()
+    {
+        
+    }
+    public void EquipWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            Debug.Log("mouse1");
+            if (AIMMode)
+            {
+                AIMMode = false;
+                anim.SetBool("AIMMode", false);
+
+            }
+            else if (!AIMMode)
+            {
+                AIMMode = true;
+                anim.SetBool("AIMMode", true);
+            }
+        }
     }
 }
