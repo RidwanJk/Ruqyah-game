@@ -10,19 +10,22 @@ public class PlayerLogic : MonoBehaviour
     public AudioClip StepAudio;
     public AudioClip DeathAudio;
     AudioSource PlayerAudio;
-    bool AIMMode = false;
+    bool AIMMode = false, AIMWalk = false;
     public Animator anim;
     public float Hitpoint;
+    FirstPersonController fp;
     // private bool isWalking = false;
 
     void Start()
     {
         PlayerAudio = this.GetComponent<AudioSource>();
+        fp = GetComponent<FirstPersonController>();
     }
 
     void Update()
     {
-        EquipWeapon();
+        EquipWeapon(fp);
+        equip(fp);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -59,26 +62,49 @@ public class PlayerLogic : MonoBehaviour
         PlayerAudio.Play();
     }
 
-    public void equip()
+    public void equip(FirstPersonController fp)
     {
         
-    }
-    public void EquipWeapon()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (fp.Grounded)
         {
-            Debug.Log("mouse1");
-            if (AIMMode)
+            if (AIMMode && fp._input.move != Vector2.zero)
             {
-                AIMMode = false;
+                anim.SetBool("AIMWalk", true);
                 anim.SetBool("AIMMode", false);
 
             }
-            else if (!AIMMode)
+            else if (AIMMode && fp._input.move == Vector2.zero)
             {
-                AIMMode = true;
+                anim.SetBool("AIMWalk", false);
                 anim.SetBool("AIMMode", true);
+
             }
         }
     }
+
+    public void EquipWeapon(FirstPersonController fp)
+    {
+        if (fp.Grounded)
+        {
+
+
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Debug.Log("mouse1");
+                if (AIMMode)
+                {
+                    AIMMode = false;
+                    anim.SetBool("AIMMode", false);
+
+                }
+                else if (!AIMMode)
+                {
+                    AIMMode = true;
+                    AIMWalk = false;
+                    anim.SetBool("AIMMode", true);
+                }
+            }
+        }
+    }
+
 }
