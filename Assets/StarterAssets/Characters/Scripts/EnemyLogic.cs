@@ -12,7 +12,6 @@ public class EnemyLogic : MonoBehaviour
     private float DistancetoTarget, DistancetDefault;
     private Animator anim;
     Vector3 DefaultPosition;
-  
 
     private void Start()
     {
@@ -20,44 +19,61 @@ public class EnemyLogic : MonoBehaviour
         anim=this.GetComponentInChildren<Animator>();
         anim.SetFloat("Hitpoint", hitPoints);
         DefaultPosition = this.transform.position;
+        MoveForward();
     }
     private void Update()
     {
-
         DistancetoTarget = Vector3.Distance(target.position, transform.position);
-        DistancetDefault = Vector3.Distance(DefaultPosition, transform.position);    
-        
-        if (DistancetoTarget <= ChaseRange)
-        {
-            if (DistancetoTarget > agent.stoppingDistance)
-            {
-                
-                ChaseTarget();
-                
-            }
-            else if (DistancetoTarget <= agent.stoppingDistance)
-            {
-                Attack();
-            } 
-        }
-        else if (DistancetoTarget >= ChaseRange * 2)
-        {
-            agent.SetDestination(DefaultPosition);
-            FaceTarget(DefaultPosition);
-            if (DistancetDefault <= agent.stoppingDistance)
-            {
-                Debug.Log("welp to far");              
-               
-                    anim.SetBool("Idle", true);
-                    anim.SetBool("Run", false);
-                    anim.SetBool("Attack", false);
-                
-            }
+        DistancetDefault = Vector3.Distance(DefaultPosition, transform.position);
 
+        ObstacleHandling();
+        if (DistancetoTarget <= ChaseRange && hitPoints > 0)
+        {
+           if (DistancetoTarget > agent.stoppingDistance)
+           {
+              ChaseTarget();
+           }
+           else if (DistancetoTarget <= agent.stoppingDistance)
+           {
+              Attack();
+           }
         }
+        else if (DistancetoTarget > ChaseRange *2)
+        {
+            MoveForward();
+            ObstacleHandling();
+        }
+
+
     }
 
 
+
+    private void MoveForward()
+    {
+        agent.SetDestination(transform.position + transform.forward * 1000f);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Run", true);
+
+    }
+
+    private void ObstacleHandling()
+    {
+        Vector3 forward = transform.forward;
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, forward, out hit, 1f))
+        {
+            Debug.Log("I hit this thing: " + hit.transform.name);
+                if (hit.collider != null && !hit.transform.tag.Equals("Player"))
+                {
+                    transform.Rotate(Vector3.up, 90f);
+                    MoveForward();
+                }
+        }
+
+       
+    }
 
     private void FaceTarget(Vector3 destination)
     {
