@@ -2,6 +2,8 @@ using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 
 public class PlayerLogic : MonoBehaviour
 {
@@ -10,10 +12,16 @@ public class PlayerLogic : MonoBehaviour
     public AudioClip StepAudio;
     public AudioClip DeathAudio;
     AudioSource PlayerAudio;
+
+   
     bool AIMMode = false, AIMWalk = false;
     public Animator anim;
     public float Hitpoint;
+    Vector3 moveDirection;
     FirstPersonController fp;
+    [SerializeField] Camera ShootCamera;
+    [SerializeField] float range = 1000f;
+  
     // private bool isWalking = false;
 
     void Start()
@@ -24,21 +32,23 @@ public class PlayerLogic : MonoBehaviour
 
     void Update()
     {
+
+       
         EquipWeapon(fp);
         equip(fp);
-
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            PlayerGetHit(100f);
+            Shoot();
         }
 
+        ShootAnimation();
         // Check for player input to determine if the character is walking.
         float moveInput = Input.GetAxis("Horizontal") + Input.GetAxis("Vertical");
         if (Mathf.Abs(moveInput) > 0)
         {
             anim.SetBool("Walk", true);
         }
-        
+       
 
     }
 
@@ -64,7 +74,7 @@ public class PlayerLogic : MonoBehaviour
 
     public void equip(FirstPersonController fp)
     {
-        
+
         if (fp.Grounded)
         {
             if (AIMMode && fp._input.move != Vector2.zero)
@@ -107,4 +117,43 @@ public class PlayerLogic : MonoBehaviour
         }
     }
 
+    private void Shoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(ShootCamera.transform.position, ShootCamera.transform.forward, out hit, range))
+        {            
+            Debug.Log("Gotchaa!" + hit.transform.name);
+            if (hit.transform.tag.Equals("Enemy"))
+            {
+                EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
+                target.TakeDamage(50);
+            }
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 direction = ShootCamera.transform.TransformDirection(Vector3.forward) * range;
+        Gizmos.DrawRay(ShootCamera.transform.position, direction);
+    }
+
+    //ditaruh di keals senjata
+    private void ShootAnimation()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {        
+                anim.SetBool("IdleShoot", true);
+                anim.SetBool("WalkShoot", false);            
+        }
+        else
+        {
+            anim.SetBool("IdleShoot", false);
+            anim.SetBool("WalkShoot", false);
+        }
+    }
 }
