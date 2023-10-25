@@ -37,6 +37,7 @@ public class EnemyLogic : MonoBehaviour
            {
               Attack();
            }
+
         }
         else if (DistancetoTarget > ChaseRange *2)
         {
@@ -107,7 +108,7 @@ public class EnemyLogic : MonoBehaviour
         if (hitPoints <= 0)
         {
             anim.SetBool("Death",true);
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, 10f);
         }
     }
 

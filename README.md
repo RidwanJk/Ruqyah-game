@@ -1,4 +1,4 @@
 # Ruqyah-game
-  branch buat apa ?
-
+buat apa branch?
+mecoba branch
 # join puh sepuh
