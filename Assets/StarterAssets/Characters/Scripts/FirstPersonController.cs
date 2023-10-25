@@ -118,7 +118,11 @@ namespace StarterAssets
 		{
 			JumpAndGravity();
 			GroundedCheck();
-			Move();
+            
+                Move();
+            
+
+            
 		}
 
 		private void LateUpdate()
@@ -157,6 +161,7 @@ namespace StarterAssets
 
 		public void Move()
 		{
+
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -190,35 +195,37 @@ namespace StarterAssets
 			// normalise input direction
 			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
-			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-			// if there is a move input rotate player when the player is moving
-			if (_input.move != Vector2.zero)
-			{
-				// move
-				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-				if (_input.sprint)
+            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+            // if there is a move input rotate player when the player is moving
+           
+            if (_input.move != Vector2.zero)
 				{
-					anim.SetBool("Run", true);
-					anim.SetBool("Walk", false);
+					// move
+					inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+					if (_input.sprint)
+					{
+						anim.SetBool("Run", true);
+						anim.SetBool("Walk", false);
+					}
+					else
+					{
+						anim.SetBool("Walk", true);
+						anim.SetBool("Run", false);
+					}
 				}
 				else
 				{
-					anim.SetBool("Walk", true);
+					// Set both "Run" and "Walk" animation parameters to false when not moving
 					anim.SetBool("Run", false);
-				}
-			}
-			else
-			{
-				// Set both "Run" and "Walk" animation parameters to false when not moving
-				anim.SetBool("Run", false);
-				anim.SetBool("Walk", false);
-			
-		
-        }
+					anim.SetBool("Walk", false);
 
-			// move the player
-			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-		}
+
+				}
+
+				// move the player
+				_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+			}
+		
 
 		private void JumpAndGravity()
 		{
@@ -239,6 +246,7 @@ namespace StarterAssets
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     anim.SetBool("Jump", true);
                     anim.SetBool("AIMMode", false);
+					Grounded = false;
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 				}
 
@@ -246,7 +254,7 @@ namespace StarterAssets
 				if (_jumpTimeoutDelta >= 0.0f)
 				{
                     anim.SetBool("Jump", false);
-                    
+                    Grounded = true;
                     _jumpTimeoutDelta -= Time.deltaTime;
 				}
 			}
