@@ -12,7 +12,7 @@ public class EnemyLogic : MonoBehaviour
     private float DistancetoTarget, DistancetDefault;
     private Animator anim;
     Vector3 DefaultPosition;
-
+  
 
     private void Start()
     {
@@ -31,7 +31,9 @@ public class EnemyLogic : MonoBehaviour
         {
             if (DistancetoTarget > agent.stoppingDistance)
             {
+                
                 ChaseTarget();
+                
             }
             else if (DistancetoTarget <= agent.stoppingDistance)
             {
@@ -65,7 +67,7 @@ public class EnemyLogic : MonoBehaviour
     }
     public void Attack()
     {
-        Debug.Log("attack");
+        Debug.Log("attack");        
         anim.SetBool("Run", false);
         anim.SetBool("Attack", true);
     }
