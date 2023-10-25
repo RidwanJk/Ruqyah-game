@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: 619e305f5165a9946b7f72464e44ca4a, type: 3}
   m_Sun: {fileID: 2114283754330233425}
-  m_IndirectSpecularColor: {r: 0.029151991, g: 0.064445145, b: 0.12694992, a: 1}
+  m_IndirectSpecularColor: {r: 0.029152056, g: 0.06444542, b: 0.12695055, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1438,7 +1438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc2dd336a4e2ba4286d8897e6cf09e9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.28000024
+      value: -0.243
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc2dd336a4e2ba4286d8897e6cf09e9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3585,6 +3585,8 @@ MonoBehaviour:
   DeathAudio: {fileID: 0}
   anim: {fileID: 4416926083347132229}
   Hitpoint: 100
+  ShootCamera: {fileID: 8944336656349189699}
+  range: 1000
 --- !u!143 &4416926083347132233
 CharacterController:
   m_ObjectHideFlags: 0

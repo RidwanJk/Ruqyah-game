@@ -27,8 +27,9 @@ public class EnemyLogic : MonoBehaviour
         DistancetoTarget = Vector3.Distance(target.position, transform.position);
         DistancetDefault = Vector3.Distance(DefaultPosition, transform.position);    
         
-        if (DistancetoTarget <= ChaseRange)
+        if (DistancetoTarget <= ChaseRange && hitPoints >= 0)
         {
+            FaceTarget(target.position);
             if (DistancetoTarget > agent.stoppingDistance)
             {
                 
@@ -91,7 +92,7 @@ public class EnemyLogic : MonoBehaviour
         if (hitPoints <= 0)
         {
             anim.SetBool("Death",true);
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, 10f);
         }
     }
 
