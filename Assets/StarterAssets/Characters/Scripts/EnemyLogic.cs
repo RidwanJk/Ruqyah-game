@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyLogic : MonoBehaviour
 {
+
+    [Header("Enemy Setting")]
     public float hitPoints = 100f;
     public float turnSpeed = 15f;
     public Transform target;
@@ -13,78 +15,73 @@ public class EnemyLogic : MonoBehaviour
     private Animator anim;
     Vector3 DefaultPosition;
 
+    [Header("Enemy SFX")]
+    public AudioClip GethitAudio;
+    public AudioClip StepAudio;
+    public AudioClip Step1Audio;
+    public AudioClip AttackSwingAudio;
+    public AudioClip AttackConnectAudio;
+    public AudioClip DeathAudio;
+    AudioSource EnemyAudio;
+
+
+
+
     private void Start()
     {
-        agent=this.GetComponent<NavMeshAgent>();
-        anim=this.GetComponentInChildren<Animator>();
+
+        agent = this.GetComponent<NavMeshAgent>();
+        anim = this.GetComponentInChildren<Animator>();
         anim.SetFloat("Hitpoint", hitPoints);
+        EnemyAudio = this.GetComponent<AudioSource>();
         DefaultPosition = this.transform.position;
-        MoveForward();
+
     }
     private void Update()
     {
+
         DistancetoTarget = Vector3.Distance(target.position, transform.position);
         DistancetDefault = Vector3.Distance(DefaultPosition, transform.position);
 
-        ObstacleHandling();
-        if (DistancetoTarget <= ChaseRange && hitPoints > 0)
+        if (DistancetoTarget <= ChaseRange && hitPoints != 0)
         {
-           if (DistancetoTarget > agent.stoppingDistance)
-           {
-              ChaseTarget();
-           }
-           else if (DistancetoTarget <= agent.stoppingDistance)
-           {
-              Attack();
-           }
+            FaceTarget(target.position);
+            if (DistancetoTarget > agent.stoppingDistance + 2f)
+            {
+                ChaseTarget();
+            }
+            else if (DistancetoTarget <= agent.stoppingDistance)
+            {
+                Attack();
+            }
+        }
+        else if (DistancetoTarget >= ChaseRange * 2)
+        {
+            agent.SetDestination(DefaultPosition);
+            FaceTarget(DefaultPosition);
+            if (DistancetDefault <= agent.stoppingDistance)
+            {
+                Debug.Log("welp to far");
+
+                anim.SetBool("Idle", true);
+                anim.SetBool("Run", false);
+                anim.SetBool("Attack", false);
+
+            }
 
         }
-        else if (DistancetoTarget > ChaseRange *2)
-        {
-            MoveForward();
-            ObstacleHandling();
-        }
-
-
     }
 
-
-
-    private void MoveForward()
-    {
-        agent.SetDestination(transform.position + transform.forward * 1000f);
-        anim.SetBool("Idle", false);
-        anim.SetBool("Run", true);
-
-    }
-
-    private void ObstacleHandling()
-    {
-        Vector3 forward = transform.forward;
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, forward, out hit, 1f))
-        {
-            Debug.Log("I hit this thing: " + hit.transform.name);
-                if (hit.collider != null && !hit.transform.tag.Equals("Player"))
-                {
-                    transform.Rotate(Vector3.up, 90f);
-                    MoveForward();
-                }
-        }
-
-       
-    }
 
     private void FaceTarget(Vector3 destination)
     {
-        Vector3 direction =(destination - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x,0,direction.z));
+        Vector3 direction = (destination - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
     public void Attack()
     {
-        Debug.Log("attack");        
+        Debug.Log("attack");
         anim.SetBool("Run", false);
         anim.SetBool("Attack", true);
     }
@@ -103,21 +100,40 @@ public class EnemyLogic : MonoBehaviour
     public void TakeDamage(float damage)
     {
         hitPoints -= damage;
+        EnemyAudio.clip = GethitAudio;
+        EnemyAudio.Play();
         anim.SetTrigger("GetHit");
         anim.SetFloat("Hitpoint", hitPoints);
         if (hitPoints <= 0)
         {
-            anim.SetBool("Death",true);
-            Destroy(gameObject, 10f);
+            EnemyAudio.clip = DeathAudio;
+            EnemyAudio.Play();
+            anim.SetBool("Death", true);
+            Destroy(gameObject, 3f);
         }
     }
 
     public void HitConnect()
     {
-        if(DistancetoTarget <= agent.stoppingDistance)
+
+        EnemyAudio.clip = AttackSwingAudio;
+        EnemyAudio.Play();
+        if (DistancetoTarget <= agent.stoppingDistance)
         {
+            EnemyAudio.clip = AttackConnectAudio;
+            EnemyAudio.Play();
             target.GetComponent<PlayerLogic>().PlayerGetHit(50f);
 
         }
+    }
+    public void step()
+    {
+        EnemyAudio.clip = StepAudio;
+        EnemyAudio.Play();
+    }
+    public void step1()
+    {
+        EnemyAudio.clip = Step1Audio;
+        EnemyAudio.Play();
     }
 }
