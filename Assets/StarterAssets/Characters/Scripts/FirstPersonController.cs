@@ -161,7 +161,6 @@ namespace StarterAssets
 
 		public void Move()
 		{
-
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
