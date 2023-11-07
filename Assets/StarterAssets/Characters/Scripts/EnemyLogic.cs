@@ -24,6 +24,8 @@ public class EnemyLogic : MonoBehaviour
     public AudioClip DeathAudio;
     AudioSource EnemyAudio;
 
+    [Header("Enemy VFX")]
+    public ParticleSystem DeathEffect;
 
 
 
@@ -107,9 +109,10 @@ public class EnemyLogic : MonoBehaviour
         if (hitPoints <= 0)
         {
             EnemyAudio.clip = DeathAudio;
+            DeathEffect.Play();
             EnemyAudio.Play();
             anim.SetBool("Death", true);
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, 10f);
         }
     }
 
