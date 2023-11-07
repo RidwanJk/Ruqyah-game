@@ -22,7 +22,10 @@ public class MazeLogic : MonoBehaviour
     public int scale = 6;
     public List<GameObject> Cube;
     public GameObject Character;
+    public GameObject Enemy;
+    public List<GameObject> Items;
     public byte[,] map;
+    bool item = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,8 @@ public class MazeLogic : MonoBehaviour
         GenerateMap();
         DrawMaps();
         PlaceCharacter();
+        PlaceEnemy();
+        PlaceItems();
     }
 
     // Update is called once per frame
@@ -107,6 +112,56 @@ public class MazeLogic : MonoBehaviour
                 }
             }
         }
+    }
+
+    public virtual void PlaceEnemy()
+    {
+        bool EnemySet = false;
+        for (int i = 0; i < depth; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                int x = Random.Range(0, width);
+                int z = Random.Range(0, depth);
+                if (map[x, z] == 0 && !EnemySet)
+                {
+                    Debug.Log("Placing Enemy");
+                    EnemySet = true;
+                    Enemy.transform.position = new Vector3(x * scale, -2.442f, z * scale);
+                }
+                else if (EnemySet)
+                {
+                    Debug.Log("Already Placing Enemy");
+                    return;
+                }
+            }
+        }
+    }
+    public virtual void PlaceItems()
+    {
+        for (int a=0; a<Items.Count; a++)
+        { 
+            for (int i = 0; i < depth; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    int x = Random.Range(0, width);
+                    int z = Random.Range(0, depth);
+                    if (map[x, z] == 0 && !item)
+                    {
+                        Debug.Log("Placing Item");
+                        Items[a].transform.position = new Vector3(x * scale, -2.442f, z * scale);
+                    }
+                    else if (item)
+                    {
+                        Debug.Log("Already Placing Enemy");
+                        return;
+                    }
+                }
+            }
+        }
+        item = true;
+
     }
 
 }
