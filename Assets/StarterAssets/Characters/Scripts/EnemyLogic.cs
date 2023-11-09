@@ -1,17 +1,19 @@
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
+using System.Linq;
+using UnityEngine;
     using UnityEngine.AI;
-    public class EnemyLogic : MonoBehaviour
-    {
+public class EnemyLogic : MonoBehaviour
+{
 
         [Header("Enemy Setting")]
         public float hitPoints = 100f;
         public float turnSpeed = 15f;
-        public Transform target;
+        public Transform target;        
         public float ChaseRange;
         private NavMeshAgent agent;
         private float DistancetoTarget, DistancetDefault;
+              
         private Animator anim;
         Vector3 DefaultPosition;
 
@@ -31,12 +33,13 @@
         public ParticleSystem DeathEffect;
 
 
-   
+        int currentWaypoint = 0;
+        public Transform[] waypoints;
 
-        private void Start()
+    private void Start()
         {
-
-            agent = this.GetComponent<NavMeshAgent>();
+        patrol();
+        agent = this.GetComponent<NavMeshAgent>();
             anim = this.GetComponentInChildren<Animator>();
             anim.SetFloat("Hitpoint", hitPoints);           
             DefaultPosition = this.transform.position;
@@ -53,8 +56,9 @@
                 FaceTarget(target.position);
                 if (DistancetoTarget > agent.stoppingDistance + 2f)
                 {
-                    ChaseTarget();                
-            }
+                    ChaseTarget();
+               
+                }
                 else if (DistancetoTarget <= agent.stoppingDistance)
                 {
                     Attack();
@@ -62,31 +66,30 @@
             }
             else if (DistancetoTarget >= ChaseRange * 2)
             {
-                agent.SetDestination(DefaultPosition);
-                FaceTarget(DefaultPosition);
-                if (DistancetDefault <= agent.stoppingDistance)
-                {
-                    Debug.Log("welp to far");
+            playingalready = false;
 
+
+            patrol();
+              
+                    Debug.Log("welp to far");
                     anim.SetBool("Idle", true);
                     anim.SetBool("Run", false);
                     anim.SetBool("Attack", false);
-
-                }
+                    
+                
 
             }
         }
 
 
-        private void FaceTarget(Vector3 destination)
+    private void FaceTarget(Vector3 destination)
         {
             Vector3 direction = (destination - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
         }
         public void Attack()
-        {
-            Debug.Log("attack");
+        {            
             anim.SetBool("Run", false);
             anim.SetBool("Attack", true);
         }
@@ -101,9 +104,24 @@
             EnemySFX.clip = Iseeyou;
             EnemySFX.Play();
             playingalready = true;
-        }
+        } 
     }
 
+    public void patrol()
+    {
+        for (int i = 0; i< waypoints.Length; i++)
+        {
+            Debug.Log(waypoints[i]);
+            if (currentWaypoint == waypoints.Length)
+            {
+                currentWaypoint = 0;
+                agent.SetDestination(waypoints[currentWaypoint].position);
+            }
+           currentWaypoint++;
+            
+        }
+       
+    }
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
