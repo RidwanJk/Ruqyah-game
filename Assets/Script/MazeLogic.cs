@@ -130,8 +130,7 @@ public class MazeLogic : MonoBehaviour
                     Enemy.transform.position = new Vector3(x * scale, -2.442f, z * scale);
                 }
                 else if (EnemySet)
-                {
-                    Debug.Log("Already Placing Enemy");
+                {                    
                     return;
                 }
             }
