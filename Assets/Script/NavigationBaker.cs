@@ -15,7 +15,7 @@ public class NavigationBaker : MonoBehaviour
         bake();
         Invoke("bake", 1);
         Invoke("bake", 2);
-        Invoke("bake", 3);
+
      
     }
 

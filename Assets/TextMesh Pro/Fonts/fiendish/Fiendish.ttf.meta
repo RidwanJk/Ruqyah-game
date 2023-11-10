@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: d92c41fd4c2cd6e48b3b869ba96728a9
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Fiendish
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 8319701b9d79746458110e82767390de, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

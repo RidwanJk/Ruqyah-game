@@ -244,6 +244,7 @@ namespace StarterAssets
 				{
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     anim.SetBool("Jump", true);
+                    anim.SetBool("AIMWalk", false);
                     anim.SetBool("AIMMode", false);
 					Grounded = false;
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
