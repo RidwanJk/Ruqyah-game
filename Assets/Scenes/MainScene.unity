@@ -9002,6 +9002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1512776092}
   - component: {fileID: 1512776093}
+  - component: {fileID: 1512776091}
   m_Layer: 0
   m_Name: MazeManager
   m_TagString: Untagged
@@ -9009,6 +9010,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1512776091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512776090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48acdebf8a216224fb4585006c7a1f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 15
+  depth: 16
+  scale: 6
+  Cube:
+  - {fileID: 8511195891426425535, guid: f1725e7c700f761489eaa109104f6b45, type: 3}
+  Character: {fileID: 4416926083347132227}
+  Enemy: {fileID: 5132326471481892884}
+  Items:
+  - {fileID: 433287174}
+  - {fileID: 895330308}
+  - {fileID: 1064147976}
 --- !u!4 &1512776092
 Transform:
   m_ObjectHideFlags: 0
@@ -9030,7 +9054,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512776090}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aac7436534f58e249912584f4508da38, type: 3}
   m_Name: 
