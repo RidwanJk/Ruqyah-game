@@ -32,19 +32,34 @@ public class EnemyLogic : MonoBehaviour
         [Header("Enemy VFX")]
         public ParticleSystem DeathEffect;
 
-
+        [Header("Do Not Edit")]
         int currentWaypoint = 0;
         public Transform[] waypoints;
+        public void SetWaypoints(List<Transform> mazeWaypoints)
+        {
+            waypoints = mazeWaypoints.ToArray();
+        }
 
     private void Start()
         {
-        patrol();
+       
         agent = this.GetComponent<NavMeshAgent>();
             anim = this.GetComponentInChildren<Animator>();
             anim.SetFloat("Hitpoint", hitPoints);           
             DefaultPosition = this.transform.position;
-
+        MazeLogic mazeLogic = FindObjectOfType<MazeLogic>();
+        if (mazeLogic != null)
+        {
+            SetWaypoints(mazeLogic.WaypointsList);
         }
+        else
+        {
+            Debug.LogError("MazeLogic not found in the scene.");
+        }
+
+        SetNextDestination();
+       
+    }
         private void Update()
         {
 
@@ -66,18 +81,16 @@ public class EnemyLogic : MonoBehaviour
             }
             else if (DistancetoTarget >= ChaseRange * 2)
             {
-            playingalready = false;
+                playingalready = false;
 
-
-            patrol();
-              
-                    Debug.Log("welp to far");
-                    anim.SetBool("Idle", true);
-                    anim.SetBool("Run", false);
-                    anim.SetBool("Attack", false);
-                    
+                if (!agent.pathPending && agent.remainingDistance <= 3f)
+                {
                 
-
+                SetNextDestination();
+                anim.SetBool("Idle", true);
+                anim.SetBool("Run", false);
+                anim.SetBool("Attack", false);
+                }                                                                                                     
             }
         }
 
@@ -107,22 +120,30 @@ public class EnemyLogic : MonoBehaviour
         } 
     }
 
-    public void patrol()
+    private void SetNextDestination()
     {
-        for (int i = 0; i< waypoints.Length; i++)
+        // Set the destination of the agent to the position of the current waypoint
+        if (waypoints != null && waypoints.Length > 0)
         {
-            Debug.Log(waypoints[i]);
+            agent.SetDestination(waypoints[currentWaypoint].position);
+
+            // Increment currentWaypoint by 1
+            currentWaypoint++;
+
+            // Check if currentWaypoint is equal to the length of the waypoints array
             if (currentWaypoint == waypoints.Length)
             {
+                // If it is, reset currentWaypoint to 0
                 currentWaypoint = 0;
-                agent.SetDestination(waypoints[currentWaypoint].position);
             }
-           currentWaypoint++;
-            
         }
-       
+        else
+        {
+            Debug.LogWarning("Waypoints array is null or empty in EnemyLogic.");
+        }
     }
-        private void OnDrawGizmosSelected()
+
+    private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, ChaseRange);

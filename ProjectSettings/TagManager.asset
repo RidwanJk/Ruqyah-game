@@ -9,6 +9,7 @@ TagManager:
   - waypoint
   - Wall
   - Ground
+  - SoundLocation
   layers:
   - Default
   - TransparentFX
