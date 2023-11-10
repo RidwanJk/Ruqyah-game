@@ -12,7 +12,10 @@ public class NavigationBaker : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Invoke("bake", 3);
+        bake();
+        Invoke("bake", 1);
+        Invoke("bake", 2);
+
      
     }
 
