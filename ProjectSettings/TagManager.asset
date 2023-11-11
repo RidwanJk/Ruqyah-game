@@ -9,6 +9,11 @@ TagManager:
   - waypoint
   - Wall
   - Ground
+<<<<<<< Updated upstream
+=======
+  - SoundLocation
+  - key
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
