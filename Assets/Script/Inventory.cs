@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class Inventory : MonoBehaviour
 {
     public InputActionReference cameraInputActionReference;
     public GameObject inventoryUi;
     public PlayerLogic Logic;
+<<<<<<< Updated upstream
 
     private bool isopen = false;
 
@@ -15,8 +15,13 @@ public class Inventory : MonoBehaviour
     void Start()
     {
 
+=======
+    private bool isopen = false;
+    // Start is called before the first frame update
+    void Start()
+    {
+>>>>>>> Stashed changes
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -28,17 +33,22 @@ public class Inventory : MonoBehaviour
                 TryPickupItem();
             }
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
         }
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     void ToggleInventory()
     {
         isopen = !isopen;
-
         if (isopen)
         {
             OpenInventory();
@@ -48,7 +58,10 @@ public class Inventory : MonoBehaviour
             CloseInventory();
         }
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     void TryPickupItem()
     {
         // Raycast to detect the item with the "Key" tag
@@ -58,12 +71,18 @@ public class Inventory : MonoBehaviour
             if (hit.collider.CompareTag("key"))
             {
                 // Perform the pickup logic here
+<<<<<<< Updated upstream
 
                 // Destroy the item in the environment
                 Destroy(hit.collider.gameObject);
 
                 // Add the item to the inventory (you might want to implement an inventory system)
 
+=======
+                // Destroy the item in the environment
+                Destroy(hit.collider.gameObject);
+                // Add the item to the inventory (you might want to implement an inventory system)
+>>>>>>> Stashed changes
                 Debug.Log("Item picked up!");
             }
         }
@@ -73,7 +92,11 @@ public class Inventory : MonoBehaviour
         Debug.Log("invenclose()");
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
         Cursor.visible = false; // Hide the cursor    
+<<<<<<< Updated upstream
             Logic.enabled = true;        
+=======
+        Logic.enabled = true;
+>>>>>>> Stashed changes
         // Hide the inventory UI
         if (inventoryUi != null)
         {
@@ -84,19 +107,30 @@ public class Inventory : MonoBehaviour
             cameraInputActionReference.action.Enable();
         }
     }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     void OpenInventory()
     {
         Debug.Log("invenopen()");
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
+<<<<<<< Updated upstream
         Cursor.visible = true;              
             Logic.enabled = false;        
+=======
+        Cursor.visible = true;
+        Logic.enabled = false;
+>>>>>>> Stashed changes
         // Show the inventory UI
         if (inventoryUi != null)
         {
             inventoryUi.SetActive(true);
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         // Disable camera input action
         if (cameraInputActionReference != null)
         {

@@ -9966,6 +9966,9 @@ MonoBehaviour:
   cameraInputActionReference: {fileID: -3787169064211337688, guid: 4419d82f33d36e848b3ed5af4c8da37e, type: 3}
   inventoryUi: {fileID: 648873381}
   Logic: {fileID: 4416926083347132230}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 --- !u!1 &1831139719
 GameObject:
