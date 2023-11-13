@@ -40,6 +40,8 @@ public class EnemyLogic : MonoBehaviour
             waypoints = mazeWaypoints.ToArray();
         }
 
+  
+
     private void Start()
         {
        
@@ -87,8 +89,8 @@ public class EnemyLogic : MonoBehaviour
                 {
                 
                 SetNextDestination();
-                anim.SetBool("Idle", true);
-                anim.SetBool("Run", false);
+                anim.SetBool("Idle", false);
+                anim.SetBool("Run", true);
                 anim.SetBool("Attack", false);
                 }                                                                                                     
             }
@@ -122,6 +124,7 @@ public class EnemyLogic : MonoBehaviour
 
     private void SetNextDestination()
     {
+        anim.SetBool("Run", true);
         // Set the destination of the agent to the position of the current waypoint
         if (waypoints != null && waypoints.Length > 0)
         {

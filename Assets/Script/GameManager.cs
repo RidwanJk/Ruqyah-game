@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private bool isPaused = false;
     public InputActionReference cameraInputActionReference;
     public AudioSource musicAudioSource;
+    public AudioSource enemyaudio;
     public AudioSource pauseSoundAudioSource;
     public GameObject pauseMenuUI; // Reference to your pause menu UI Canvas
+    bool GameHasEnded = false;
+    public GameObject GameOverMenu;
+    public PlayerLogic Logic;
 
     void Start()
     {
@@ -37,6 +42,18 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
+        if (Logic.Hitpoint <= 0 && isPaused == false)
+        {
+            PauseGame();
+            pauseMenuUI.SetActive(false);
+            GameOverMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            GameHasEnded = true;
+            isPaused = true;
+            Logic.enabled = false;
+
+        }
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
@@ -122,4 +139,21 @@ public class GameManager : MonoBehaviour
 
         // Add any additional resume-related logic here
     }
+
+
+    public void RetryGame()
+    {
+        if (GameHasEnded == false)
+        {
+            GameHasEnded = true;
+            GameOverMenu.SetActive(true);
+            Invoke("Restart", 3f);
+        }
+    }
+
+    void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
+
