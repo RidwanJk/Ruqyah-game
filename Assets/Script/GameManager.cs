@@ -78,6 +78,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PindahScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void PauseGame()
     {
         Debug.Log("PauseGame()");
