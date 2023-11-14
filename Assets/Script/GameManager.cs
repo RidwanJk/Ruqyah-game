@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public PlayerLogic Logic;
     public Rigidbody kameraRoot;
     public Collider kameracol;
-
+    public Collider PlayerCapsul;
     void Start()
     {
         // Lock and hide cursor at the start of the game
@@ -54,7 +54,9 @@ public class GameManager : MonoBehaviour
             isPaused = true;
             Logic.enabled = false;
             kameracol.enabled = true;
-            kameraRoot.useGravity = true;            
+            kameraRoot.useGravity = true;    
+            PlayerCapsul.enabled = false;
+
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
