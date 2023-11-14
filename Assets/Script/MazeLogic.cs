@@ -186,8 +186,7 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && waypointset != waypointscount)
-                {
-                    Debug.Log("Placing Waypoints");
+                {                    
                     waypointset++;
                     Transform waypointTransform = Instantiate(waypoints, new Vector3(x * scale, 0, z * scale), Quaternion.identity).transform;
                     WaypointsList.Add(waypointTransform);
@@ -213,11 +212,11 @@ public class MazeLogic : MonoBehaviour
                 {                    
                     RandomSfxSet++;
 
-                    // Instantiate the RandomSfx object
+                    
                     Transform SFXTransform = Instantiate(RandomSfx, new Vector3(x * scale, 0, z * scale), Quaternion.identity).transform;
                     RandomSfxList.Add(SFXTransform);
 
-                    // Assign a random audio clip to the AudioSource component
+                    
                     AudioSource audioSource = SFXTransform.GetComponent<AudioSource>();
                     if (audioSource != null && audioClips.Count > 0)
                     {
@@ -229,8 +228,7 @@ public class MazeLogic : MonoBehaviour
                     }
                 }
                 else if (RandomSfxSet == RandomSfxcount)
-                {
-                    Debug.Log("Already placing RandomSfx");
+                {                    
                     return;
                 }
             }

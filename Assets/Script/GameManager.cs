@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     bool GameHasEnded = false;
     public GameObject GameOverMenu;
     public PlayerLogic Logic;
+    public Rigidbody kameraRoot;
+    public Collider kameracol;
 
     void Start()
     {
@@ -45,12 +47,16 @@ public class GameManager : MonoBehaviour
 
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {
-            Invoke("PauseGame",0.3f);                        
+            Destroy(Logic.gameObject, 10f);
+            Invoke("PauseGame",2f);                        
             GameOverMenu.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             GameHasEnded = true;
             isPaused = true;
             Logic.enabled = false;
+            kameracol.enabled = true;
+            kameraRoot.useGravity = true;
+            
 
         }
         if (Input.GetKeyDown(KeyCode.P))
