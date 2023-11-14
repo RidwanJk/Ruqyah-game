@@ -45,8 +45,7 @@ public class GameManager : MonoBehaviour
 
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {
-            PauseGame();
-            pauseMenuUI.SetActive(false);
+            Invoke("PauseGame",0.3f);                        
             GameOverMenu.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             GameHasEnded = true;
@@ -100,9 +99,13 @@ public class GameManager : MonoBehaviour
         }
 
         // Show the pause menu
-        if (pauseMenuUI != null)
+        if (pauseMenuUI != null && Logic.Hitpoint > 0)
         {
             pauseMenuUI.SetActive(true);
+        }
+        else if (Logic.Hitpoint <= 0)
+        {
+            pauseMenuUI.SetActive(false);
         }
 
         // Add any additional pause-related logic here
@@ -135,7 +138,7 @@ public class GameManager : MonoBehaviour
         if (pauseMenuUI != null)
         {
             pauseMenuUI.SetActive(false);
-        }
+        } 
 
         // Add any additional resume-related logic here
     }
@@ -143,17 +146,19 @@ public class GameManager : MonoBehaviour
 
     public void RetryGame()
     {
-        if (GameHasEnded == false)
+        if (GameHasEnded == true)
         {
             GameHasEnded = true;
             GameOverMenu.SetActive(true);
-            Invoke("Restart", 3f);
+            Restart();
+            Debug.Log("Restarting");
         }
     }
 
     void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ResumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
     }
 }
 
