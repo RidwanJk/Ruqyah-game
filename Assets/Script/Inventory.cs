@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
@@ -9,12 +10,11 @@ public class Inventory : MonoBehaviour
     public InputActionReference cameraInputActionReference;
     public GameObject inventoryUi;
     public PlayerLogic Logic;
+    public List<GameObject> box;
+    
     public object GameObject;
     private bool isopen = false;
 
-    // Update is called once per frame
-    
-    
     void Update()
     {
         if (!isopen)
@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I)&& Logic.isQuran == true)
         {
             ToggleInventory();
         }
@@ -48,35 +48,28 @@ public class Inventory : MonoBehaviour
 
     void TryPickupItem()
     {
-        
-
-        if (Logic == null)
-        {
-            Debug.LogError("PlayerLogic component not found!");
-            return;
-        }
-        if (Logic.ShootCamera == null)
-        {
-            Debug.LogError("ShootCamera not assigned in PlayerLogic!");
-            return;
-        }
         RaycastHit hit;
         if (Physics.Raycast(Logic.ShootCamera.transform.position, Logic.ShootCamera.transform.forward, out hit, 10f))
         {
-            // Your logic for handling the hit goes here
-            // For example, checking the tag of the object hit
-            if (hit.transform.tag.Equals("Key"))
+            if (hit.transform.tag.Equals("Al-Quran"))
             {
-                Logic.key++;
-                // Perform pickup logic here
+                Logic.quran++;
                 Destroy(hit.collider.gameObject);
-                Debug.Log("Item picked up!");
+                Debug.Log("quran: "+Logic.quran);
             }
-            if (hit.transform.tag.Equals("Weapon"))
+            else if (hit.transform.tag.Equals("surah"))
             {
-                Logic.Weapon++;
+                Logic.surah++;
+                Destroy(hit.collider.gameObject);
+                Debug.Log("surah: " + Logic.surah);
             }
+            else if (hit.transform.tag.Equals("tasbih"))
+            {
+                Logic.tasbih++;
+                Destroy(hit.collider.gameObject);
+                Debug.Log("tasbih: " + Logic.tasbih);
             }
+        }
 
     }
 
@@ -99,14 +92,13 @@ public class Inventory : MonoBehaviour
 
     void OpenInventory()
     {
-        Debug.Log("invenopen()");
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true;
         Logic.enabled = false;
         // Show the inventory UI
         if (inventoryUi != null)
         {
-            inventoryUi.SetActive(true);
+            inventoryUi.SetActive(true); 
         }
 
         // Disable camera input action
