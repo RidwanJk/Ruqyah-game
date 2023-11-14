@@ -19,7 +19,9 @@ public class PlayerLogic : MonoBehaviour
     public float Hitpoint;
     Vector3 moveDirection;
     FirstPersonController fp;
-    [SerializeField] Camera ShootCamera;
+    public Camera ShootCamera;
+    public int key = 0;
+    public int Weapon = 0;
     [SerializeField] float range = 1000f;
   
     // private bool isWalking = false;

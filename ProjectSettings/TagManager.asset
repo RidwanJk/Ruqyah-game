@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Ground
   - SoundLocation
+  - Key
   layers:
   - Default
   - TransparentFX

@@ -119,14 +119,12 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && !PlayerSet)
-                {
-                    Debug.Log("Placing Character");
+                {                    
                     PlayerSet = true;
                     Character.transform.position = new Vector3(x * scale, -2.442f, z * scale);
                 }
                 else if (PlayerSet)
-                {
-                    Debug.Log("Already Placing Character");
+                {                    
                     return;
                 }
             }
@@ -143,8 +141,7 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && !EnemySet)
-                {
-                    Debug.Log("Placing Enemy");
+                {                    
                     EnemySet = true;
                     Enemy.transform.position = new Vector3(x * scale, -2.442f, z * scale);
                 }
@@ -166,13 +163,11 @@ public class MazeLogic : MonoBehaviour
                     int x = Random.Range(0, width);
                     int z = Random.Range(0, depth);
                     if (map[x, z] == 0 && !item)
-                    {
-                        Debug.Log("Placing Item");
+                    {                        
                         Items[a].transform.position = new Vector3(x * scale, -2.442f, z * scale);
                     }
                     else if (item)
-                    {
-                        Debug.Log("Already Placing Items");
+                    {                       
                         return;
                     }
                 }
@@ -191,15 +186,13 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && waypointset != waypointscount)
-                {
-                    Debug.Log("Placing Waypoints");
+                {                    
                     waypointset++;
                     Transform waypointTransform = Instantiate(waypoints, new Vector3(x * scale, 0, z * scale), Quaternion.identity).transform;
                     WaypointsList.Add(waypointTransform);
                 }
                 else if (waypointset == waypointscount)
-                {
-                    Debug.Log("Already Placing waypoints");
+                {                    
                     return;
                 }
             }
@@ -216,15 +209,14 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && RandomSfxSet != RandomSfxcount)
-                {
-                    Debug.Log("Placing RandomSfx");
+                {                    
                     RandomSfxSet++;
 
-                    // Instantiate the RandomSfx object
+                    
                     Transform SFXTransform = Instantiate(RandomSfx, new Vector3(x * scale, 0, z * scale), Quaternion.identity).transform;
                     RandomSfxList.Add(SFXTransform);
 
-                    // Assign a random audio clip to the AudioSource component
+                    
                     AudioSource audioSource = SFXTransform.GetComponent<AudioSource>();
                     if (audioSource != null && audioClips.Count > 0)
                     {
@@ -236,32 +228,26 @@ public class MazeLogic : MonoBehaviour
                     }
                 }
                 else if (RandomSfxSet == RandomSfxcount)
-                {
-                    Debug.Log("Already placing RandomSfx");
+                {                    
                     return;
                 }
             }
         }
     }
     void CheckAndPlayAudioInRange()
-    {
-        // Assuming your player character is represented by the "Character" GameObject
+    {        
         Vector3 playerPosition = Character.transform.position;
 
         foreach (Transform audioTransform in RandomSfxList)
-        {
-            // Check the distance between the player and the audio source
-            float distance = Vector3.Distance(playerPosition, audioTransform.position);
-
-            // Set your desired range for playing audio
+        {            
+            float distance = Vector3.Distance(playerPosition, audioTransform.position);            
             float playRange = 5.0f;
 
             if (distance < playRange)
             {
                 AudioSource audioSource = audioTransform.GetComponent<AudioSource>();
                 if (audioSource != null && !audioSource.isPlaying)
-                {
-                    // Play the audio clip
+                {                    
                     audioSource.Play();
                 }
             }

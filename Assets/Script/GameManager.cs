@@ -3,15 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private bool isPaused = false;
     public InputActionReference cameraInputActionReference;
     public AudioSource musicAudioSource;
+    public AudioSource enemyaudio;
     public AudioSource pauseSoundAudioSource;
     public GameObject pauseMenuUI; // Reference to your pause menu UI Canvas
-
+    bool GameHasEnded = false;
+    public GameObject GameOverMenu;
+    public PlayerLogic Logic;
+    public Rigidbody kameraRoot;
+    public Collider kameracol;
+    public Collider PlayerCapsul;
     void Start()
     {
         // Lock and hide cursor at the start of the game
@@ -37,6 +44,20 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
+        if (Logic.Hitpoint <= 0 && isPaused == false)
+        {            
+            Invoke("PauseGame",1.5f);                        
+            GameOverMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            GameHasEnded = true;
+            isPaused = true;
+            Logic.enabled = false;
+            kameracol.enabled = true;
+            kameraRoot.useGravity = true;    
+            PlayerCapsul.enabled = false;
+
+        }
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
@@ -83,9 +104,13 @@ public class GameManager : MonoBehaviour
         }
 
         // Show the pause menu
-        if (pauseMenuUI != null)
+        if (pauseMenuUI != null && Logic.Hitpoint > 0)
         {
             pauseMenuUI.SetActive(true);
+        }
+        else if (Logic.Hitpoint <= 0)
+        {
+            pauseMenuUI.SetActive(false);
         }
 
         // Add any additional pause-related logic here
@@ -118,8 +143,27 @@ public class GameManager : MonoBehaviour
         if (pauseMenuUI != null)
         {
             pauseMenuUI.SetActive(false);
-        }
+        } 
 
         // Add any additional resume-related logic here
     }
+
+
+    public void RetryGame()
+    {
+        if (GameHasEnded == true)
+        {
+            GameHasEnded = true;
+            GameOverMenu.SetActive(true);
+            Restart();
+            Debug.Log("Restarting");
+        }
+    }
+
+    void Restart()
+    {
+        ResumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
+    }
 }
+
