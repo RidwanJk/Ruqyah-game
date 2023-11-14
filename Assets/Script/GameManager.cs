@@ -46,18 +46,15 @@ public class GameManager : MonoBehaviour
     {
 
         if (Logic.Hitpoint <= 0 && isPaused == false)
-        {
-            Destroy(Logic.gameObject, 10f);
-            Invoke("PauseGame",2f);                        
+        {            
+            Invoke("PauseGame",1.5f);                        
             GameOverMenu.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             GameHasEnded = true;
             isPaused = true;
             Logic.enabled = false;
             kameracol.enabled = true;
-            kameraRoot.useGravity = true;
-            
-
+            kameraRoot.useGravity = true;            
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
