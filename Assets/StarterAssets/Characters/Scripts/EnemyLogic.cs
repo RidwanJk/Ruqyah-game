@@ -79,10 +79,14 @@ public class EnemyLogic : MonoBehaviour
                 else if (DistancetoTarget <= agent.stoppingDistance)
                 {
                     Attack();
-                }
+                Debug.Log(ChaseRange);
+                Debug.Log(agent.stoppingDistance);
+
             }
+        }
             else if (DistancetoTarget >= ChaseRange * 2)
             {
+
                 playingalready = false;
 
                 if (!agent.pathPending && agent.remainingDistance <= 3f)

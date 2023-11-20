@@ -29,6 +29,10 @@ public class MazeLogic : MonoBehaviour
     public List<GameObject> Items;
     public byte[,] map;
     bool item = false;
+    int playerX;
+    int playerY;
+    public NavigationBaker baker;
+    public PlayerLogic PL;
 
     [Header("Do Not Edit List")]
     public GameObject waypoints;
@@ -54,6 +58,15 @@ public class MazeLogic : MonoBehaviour
         PlaceItems();
         PlaceWaypoints();
         RandomAudio();
+        baker.bake();
+        PL.enabled = true;
+
+        //PlaceCharacter();
+        if (map[playerX,playerY] == 1) 
+        {
+            Debug.Log("player ditembok, calling place character lagi");
+            PlaceCharacter();
+        }
     }
 
     // Update is called once per frame
@@ -109,7 +122,7 @@ public class MazeLogic : MonoBehaviour
         return count;
     }
 
-    public virtual void PlaceCharacter()
+    public void PlaceCharacter()
     {
         bool PlayerSet = false;
         for (int i = 0; i < depth; i++)
@@ -119,9 +132,12 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && !PlayerSet)
-                {                    
+                {
+                    Debug.Log("masang karakter di koordinat x: "+x+" z: "+z + " Value : " + map[x,z]);
                     PlayerSet = true;
                     Character.transform.position = new Vector3(x * scale, -2.442f, z * scale);
+                    playerX = x;
+                    playerY = z;
                 }
                 else if (PlayerSet)
                 {                    

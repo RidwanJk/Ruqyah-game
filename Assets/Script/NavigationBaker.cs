@@ -10,16 +10,8 @@ public class NavigationBaker : MonoBehaviour
     public Transform[] objectsToRotate;
 
     // Use this for initialization
-    void Start()
-    {
-        bake();
-        Invoke("bake", 1);
-        Invoke("bake", 2);
 
-     
-    }
-
-    private void bake()
+    public void bake()
     {
         for (int j = 0; j < objectsToRotate.Length; j++)
         {

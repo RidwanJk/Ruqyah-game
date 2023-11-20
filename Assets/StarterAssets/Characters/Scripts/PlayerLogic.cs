@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
 
 public class PlayerLogic : MonoBehaviour
@@ -14,14 +15,24 @@ public class PlayerLogic : MonoBehaviour
     AudioSource PlayerAudio;
 
    
-    bool AIMMode = false, AIMWalk = false;
+    bool AIMMode = false;
     public Animator anim;
     public float Hitpoint;
     Vector3 moveDirection;
     FirstPersonController fp;
-    public Camera ShootCamera;
-    public int key = 0;
-    public int Weapon = 0;
+    public Camera ShootCamera; 
+    public int quran = 0;
+    public int surah = 0;
+    public int tasbih = 0;
+    public int lentera = 0;
+    public int fullItem = 0;
+
+    public bool isTasbih = false;
+    public bool isLentera = false;
+    public bool isQuran = false;
+
+    public List<GameObject> item;
+
     [SerializeField] float range = 1000f;
   
     // private bool isWalking = false;
@@ -50,6 +61,8 @@ public class PlayerLogic : MonoBehaviour
         {
             anim.SetBool("Walk", true);
         }
+
+        pilihWeapon();
        
 
     }
@@ -64,12 +77,12 @@ public class PlayerLogic : MonoBehaviour
             PlayerAudio.clip = DeathAudio;
             PlayerAudio.Play();
             anim.SetBool("Death", true);
+            this.GetComponent<PlayerLogic>().enabled = false;
         }
     }
 
     public void step()
     {
-        Debug.Log("Step");
         PlayerAudio.clip = StepAudio;
         PlayerAudio.Play();
     }
@@ -99,24 +112,61 @@ public class PlayerLogic : MonoBehaviour
         if (fp.Grounded)
         {
 
-
+            
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                Debug.Log("mouse1");
                 if (AIMMode)
                 {
                     AIMMode = false;
                     anim.SetBool("AIMMode", false);
-
                 }
                 else if (!AIMMode)
                 {
                     AIMMode = true;
-                    AIMWalk = false;
                     anim.SetBool("AIMMode", true);
                 }
             }
         }
+    }
+
+    public void pilihWeapon()
+    {
+        if (!AIMMode)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                isLentera = true;
+                isTasbih = false;
+                isQuran = false;
+
+                item[0].SetActive(true);
+                item[1].SetActive(false);
+                item[2].SetActive(false);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && tasbih == 1)
+            {
+                isLentera = false;
+                isTasbih = true;
+                isQuran = false;
+
+                item[0].SetActive(false);
+                item[1].SetActive(true);
+                item[2].SetActive(false);
+
+                Debug.Log(item[1]);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3)&& quran == 1)
+            {
+                isLentera = false;
+                isTasbih = false;
+                isQuran = true;
+
+                item[0].SetActive(false);
+                item[1].SetActive(false);
+                item[2].SetActive(true);
+            }
+        }
+       
     }
 
     private void Shoot()

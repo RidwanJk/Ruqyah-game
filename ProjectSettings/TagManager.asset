@@ -11,6 +11,8 @@ TagManager:
   - Ground
   - SoundLocation
   - Key
+  - Al-Quran
+  - tasbih
   layers:
   - Default
   - TransparentFX
