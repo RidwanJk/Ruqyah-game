@@ -12205,8 +12205,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48acdebf8a216224fb4585006c7a1f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 20
-  depth: 20
+  width: 15
+  depth: 15
   scale: 6
   Cube:
   - {fileID: 8511195891426425535, guid: f1725e7c700f761489eaa109104f6b45, type: 3}
@@ -12216,6 +12216,8 @@ MonoBehaviour:
   - {fileID: 1980575846484508534}
   - {fileID: 919132149301230727}
   - {fileID: 1064147976}
+  baker: {fileID: 1377404734}
+  PL: {fileID: 0}
   waypoints: {fileID: 1873176662}
   waypointscount: 20
   WaypointsList: []
@@ -12270,6 +12272,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 1064147976}
+  baker: {fileID: 0}
+  PL: {fileID: 0}
   waypoints: {fileID: 1873176662}
   waypointscount: 20
   WaypointsList: []
@@ -13451,7 +13455,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070925443028286612}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.04, y: 1.492, z: 0.086}
+  m_LocalPosition: {x: 0, y: 1.492, z: 0.086}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2070925443526839471}
@@ -13550,7 +13554,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4416926083347132227}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.04, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8338988565591873055}
@@ -14519,7 +14523,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8944336656349189697}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.04, y: 1.492, z: 0.086}
+  m_LocalPosition: {x: 0, y: 1.492, z: 0.086}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -77,6 +77,7 @@ public class PlayerLogic : MonoBehaviour
             PlayerAudio.clip = DeathAudio;
             PlayerAudio.Play();
             anim.SetBool("Death", true);
+            this.GetComponent<PlayerLogic>().enabled = false;
         }
     }
 
