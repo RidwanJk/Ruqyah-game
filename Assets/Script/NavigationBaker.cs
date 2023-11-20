@@ -10,7 +10,7 @@ public class NavigationBaker : MonoBehaviour
     public Transform[] objectsToRotate;
 
     // Use this for initialization
-
+  
     public void bake()
     {
         for (int j = 0; j < objectsToRotate.Length; j++)
@@ -22,5 +22,6 @@ public class NavigationBaker : MonoBehaviour
         {
             surfaces[i].BuildNavMesh();
         }
+        Debug.Log("baked");
     }
 }

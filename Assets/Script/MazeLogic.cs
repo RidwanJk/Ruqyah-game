@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 public class MapLocation
 {
@@ -31,8 +31,11 @@ public class MazeLogic : MonoBehaviour
     bool item = false;
     int playerX;
     int playerY;
+    public NavMeshAgent enemyagent;
     public NavigationBaker baker;
     public PlayerLogic PL;
+    CharacterController characterController;
+    public GameManager gameManager;
 
     [Header("Do Not Edit List")]
     public GameObject waypoints;
@@ -49,7 +52,7 @@ public class MazeLogic : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         InitialiseMap();
         GenerateMap();
         DrawMaps();
@@ -58,8 +61,9 @@ public class MazeLogic : MonoBehaviour
         PlaceItems();
         PlaceWaypoints();
         RandomAudio();
-        baker.bake();
-        PL.enabled = true;
+        
+        characterController= Character.GetComponent<CharacterController>();
+        characterController.enabled=true;
 
         //PlaceCharacter();
         if (map[playerX,playerY] == 1) 
@@ -96,7 +100,7 @@ public class MazeLogic : MonoBehaviour
     }
 
     void DrawMaps()
-    {
+    {        
         for (int z = 0; z < depth; z++)
             for (int x = 0; x < width; x++)
             {
@@ -140,7 +144,9 @@ public class MazeLogic : MonoBehaviour
                     playerY = z;
                 }
                 else if (PlayerSet)
-                {                    
+                {
+                    PL.enabled = true;
+                    gameManager.ResumeGame();
                     return;
                 }
             }
@@ -162,7 +168,9 @@ public class MazeLogic : MonoBehaviour
                     Enemy.transform.position = new Vector3(x * scale, -2.442f, z * scale);
                 }
                 else if (EnemySet)
-                {                    
+                {
+                    baker.bake();
+                    enemyagent.enabled = true;
                     return;
                 }
             }

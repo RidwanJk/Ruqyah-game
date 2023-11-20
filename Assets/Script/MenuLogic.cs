@@ -37,6 +37,6 @@ public class MenuLogic : MonoBehaviour
     // Metode untuk keluar dari game
     public void KeluarDariGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
     }
 }

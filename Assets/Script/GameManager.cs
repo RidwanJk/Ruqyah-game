@@ -2,12 +2,13 @@ using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private bool isPaused = false;
+    public bool isPaused = false;
     public InputActionReference cameraInputActionReference;
     public AudioSource musicAudioSource;
     public AudioSource enemyaudio;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     public Rigidbody kameraRoot;
     public Collider kameracol;
     public Collider PlayerCapsul;
+    public GameObject enemy;
+    public GameObject mc;
     void Start()
     {
         // Lock and hide cursor at the start of the game
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        //handeling death
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {            
             Invoke("PauseGame",1.5f);                        
@@ -55,7 +58,7 @@ public class GameManager : MonoBehaviour
             Logic.enabled = false;
             kameracol.enabled = true;
             kameraRoot.useGravity = true;    
-            PlayerCapsul.enabled = false;
+            PlayerCapsul.enabled = false;          
 
         }
         if (Input.GetKeyDown(KeyCode.P))
@@ -80,6 +83,10 @@ public class GameManager : MonoBehaviour
 
     public void PindahScene(string sceneName)
     {
+        Logic.enabled = false;
+        mc.GetComponent<CharacterController>().enabled = false;
+        enemy.GetComponent<EnemyLogic>().enabled=false;
+        enemy.GetComponent<NavMeshAgent>().enabled = false;
         SceneManager.LoadScene(sceneName);
     }
 
@@ -89,6 +96,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f; // Set the time scale to 0 to pause the game
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true; // Make the cursor visible
+     
 
         // Disable the camera input action
         if (cameraInputActionReference != null)
@@ -165,8 +173,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Restart()
+    public void Restart()
     {
+        
         ResumeGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);        
     }
