@@ -78,9 +78,7 @@ public class EnemyLogic : MonoBehaviour
                 }
                 else if (DistancetoTarget <= agent.stoppingDistance)
                 {
-                    Attack();
-                Debug.Log(ChaseRange);
-                Debug.Log(agent.stoppingDistance);
+                    Attack();                
 
             }
         }
