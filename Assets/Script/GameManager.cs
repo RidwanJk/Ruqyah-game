@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void PindahScene(string sceneName)
     {
+        //handle exit to menu
         Logic.enabled = false;
         mc.GetComponent<CharacterController>().enabled = false;
         enemy.GetComponent<EnemyLogic>().enabled=false;
@@ -93,9 +94,10 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         Debug.Log("PauseGame()");
-        Time.timeScale = 0f; // Set the time scale to 0 to pause the game
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
-        Cursor.visible = true; // Make the cursor visible
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true; 
+        Logic.hitscreen.SetActive(false);
      
 
         // Disable the camera input action
@@ -135,7 +137,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f; // Set the time scale back to 1 to resume the game
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
         Cursor.visible = false; // Hide the cursor
-
+        Logic.hitscreen.SetActive(true);
         // Enable the camera input action
         if (cameraInputActionReference != null)
         {

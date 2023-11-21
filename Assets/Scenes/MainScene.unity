@@ -11544,14 +11544,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: df88f31b02edbf542809493dd56f2e9f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14823,7 +14823,7 @@ MonoBehaviour:
   DeathAudio: {fileID: 8300000, guid: 0c64319d0342103489e3548e7c4ca006, type: 3}
   Enemy: {fileID: 5132326471481892884}
   anim: {fileID: 4416926083347132229}
-  Hitpoint: 100
+  Hitpoint: 200
   ShootCamera: {fileID: 8944336656349189699}
   cameffect: {fileID: 8338988565591873048}
   quran: 0
@@ -14839,6 +14839,7 @@ MonoBehaviour:
   - {fileID: 1775667021}
   - {fileID: 1145630328}
   range: 1000
+  hitscreen: {fileID: 918516726}
 --- !u!82 &4416926083347132231
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14895,7 +14896,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

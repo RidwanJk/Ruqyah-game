@@ -1,11 +1,14 @@
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 public class PlayerLogic : MonoBehaviour
 {
@@ -38,7 +41,8 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField] float range = 1000f;
     NavMeshAgent enemyagent;
     CameraShake cshake;
-    Rigidbody rbnyaeffect;  
+    Rigidbody rbnyaeffect;
+    public GameObject hitscreen;
 
     // private bool isWalking = false;
 
@@ -53,8 +57,17 @@ public class PlayerLogic : MonoBehaviour
 
     void Update()
     {
+      
+        if (hitscreen != null)
+        {
+            if (hitscreen.GetComponentInChildren<Image>().color.a > 0)
+            {
+                var color = hitscreen.GetComponentInChildren<Image>().color;
+                color.a -= 0.01f;
+                hitscreen.GetComponentInChildren<Image>().color = color;
+            }
+        }
 
-       
         EquipWeapon(fp);
         equip(fp);
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -74,15 +87,26 @@ public class PlayerLogic : MonoBehaviour
        
 
     }
+    void gethurt()
+    {
+        //hitscreen
+        var color = hitscreen.GetComponentInChildren<Image>().color;
+        color.a = 0.8f;
+        hitscreen.GetComponentInChildren<Image>().color = color;
+    }
 
     public void PlayerGetHit(float damage)
     {
         Debug.Log("Player Receive Damage -> " + damage);
+
+        gethurt();
+       
         Hitpoint = Hitpoint - damage;
         cshake.shakeDuration = 0.5f;
         anim.SetTrigger("GetHit");
         if (Hitpoint <= 0)
         {
+            hitscreen.SetActive(false);
             PlayerAudio.clip = DeathAudio;
             PlayerAudio.Play();
             anim.SetBool("Death", true);
