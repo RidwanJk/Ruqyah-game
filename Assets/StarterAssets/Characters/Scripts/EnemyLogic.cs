@@ -13,6 +13,8 @@ public class EnemyLogic : MonoBehaviour
         public float ChaseRange;
         private NavMeshAgent agent;
         private float DistancetoTarget, DistancetDefault;
+        public PlayerLogic PL;
+
               
         private Animator anim;
         Vector3 DefaultPosition;
@@ -31,6 +33,7 @@ public class EnemyLogic : MonoBehaviour
 
         [Header("Enemy VFX")]
         public ParticleSystem DeathEffect;
+        
 
         [Header("Do Not Edit")]
         int currentWaypoint = 0;
@@ -155,6 +158,32 @@ public class EnemyLogic : MonoBehaviour
         }
         public void TakeDamage(float damage)
         {
+        
+        if(PL.isTasbih)
+        {
+
+            PL.counter++;
+
+            if (PL.counter <= 2) 
+            {
+                var x = Random.Range(1, 20);
+                agent.transform.position = (waypoints[x].position);
+                Debug.Log(PL.counter);
+                 if (PL.counter == 2)
+                {
+                    
+                    PL.anim.SetBool("AIMMode", false);
+                    PL.AIMMode = false;
+                    PL.isTasbih = false;    
+                    PL.item[1].SetActive(false);
+                    Debug.Log("Tasbih Hancur " + PL.counter);
+                }
+
+            }
+           
+           
+        } else if (PL.isQuran) 
+        {
             hitPoints -= damage;
             EnemyAudio.clip = GethitAudio;
             EnemyAudio.Play();
@@ -168,6 +197,9 @@ public class EnemyLogic : MonoBehaviour
                 anim.SetBool("Death", true);
                 Destroy(gameObject, 10f);
             }
+        }
+           
+            
         }
 
         public void HitConnect()

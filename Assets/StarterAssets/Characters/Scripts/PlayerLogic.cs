@@ -31,6 +31,7 @@ public class PlayerLogic : MonoBehaviour
     public int tasbih = 0;
     public int lentera = 0;
     public int fullItem = 0;
+    public int counter = 0;
 
     public bool isTasbih = false;
     public bool isLentera = false;
@@ -186,7 +187,7 @@ public class PlayerLogic : MonoBehaviour
                 item[1].SetActive(false);
                 item[2].SetActive(false);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && tasbih == 1)
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && tasbih == 1 && counter < 2)
             {
                 isLentera = false;
                 isTasbih = true;
@@ -198,7 +199,7 @@ public class PlayerLogic : MonoBehaviour
 
                 Debug.Log(item[1]);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3)&& quran == 1)
+            else if (Input.GetKeyDown(KeyCode.Alpha3)&& quran == 1 && surah == 3)
             {
                 isLentera = false;
                 isTasbih = false;
@@ -214,14 +215,17 @@ public class PlayerLogic : MonoBehaviour
 
     private void Shoot()
     {
+
         RaycastHit hit;
         if (Physics.Raycast(ShootCamera.transform.position, ShootCamera.transform.forward, out hit, range))
         {            
             Debug.Log("Gotchaa!" + hit.transform.name);
             if (hit.transform.tag.Equals("Enemy"))
             {
+
                 EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
                 target.TakeDamage(50);
+
             }
         }
         else

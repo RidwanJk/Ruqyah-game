@@ -1,3 +1,4 @@
+using Lean.Gui;
 using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,8 +23,18 @@ public class GameManager : MonoBehaviour
     public Collider PlayerCapsul;
     public GameObject enemy;
     public GameObject mc;
+    public GameObject tutorkak;
+    LeanWindow window;
+
+   
     void Start()
     {
+        var canvasnya = tutorkak.GetComponentInChildren<Canvas>();
+        var modal = canvasnya.GetComponent<Canvas>();
+        var modalwindow = modal.GetComponentInChildren<LeanWindow>();
+        window = modalwindow;
+        window.TurnOn();    
+
         // Lock and hide cursor at the start of the game
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -50,7 +61,7 @@ public class GameManager : MonoBehaviour
         //handeling death
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {            
-            Invoke("PauseGame",1.5f);                        
+            Invoke("PauseGame",0.5f);                        
             GameOverMenu.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             GameHasEnded = true;
@@ -64,6 +75,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            window.TurnOn();
         }
     }
 
