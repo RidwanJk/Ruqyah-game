@@ -21,8 +21,9 @@ public class Inventory : MonoBehaviour
         {
             // Check for item pickup when inventory is not open
             if (Input.GetKeyDown(KeyCode.E))
-            {
+            {                           
                 TryPickupItem();
+                Logic.anim.SetTrigger("Loot");
             }
         }
 
@@ -56,6 +57,7 @@ public class Inventory : MonoBehaviour
                 Logic.quran++;
                 Destroy(hit.collider.gameObject);
                 Debug.Log("quran: "+Logic.quran);
+
             }
             else if (hit.transform.tag.Equals("surah"))
             {

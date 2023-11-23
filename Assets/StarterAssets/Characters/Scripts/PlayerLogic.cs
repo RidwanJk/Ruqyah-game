@@ -19,7 +19,7 @@ public class PlayerLogic : MonoBehaviour
     AudioSource PlayerAudio;
 
     public GameObject Enemy;
-    bool AIMMode = false;
+    public bool AIMMode = false;
     public Animator anim;
     public float Hitpoint;
     Vector3 moveDirection;
@@ -113,7 +113,7 @@ public class PlayerLogic : MonoBehaviour
             this.GetComponent<PlayerLogic>().enabled = false;
             enemyagent.enabled = false;
             this.GetComponent<CharacterController>().enabled = false;
-            rbnyaeffect.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            rbnyaeffect.AddForce(Vector3.up * 50, ForceMode.Impulse);
 
         }
     }
@@ -129,17 +129,22 @@ public class PlayerLogic : MonoBehaviour
 
         if (fp.Grounded)
         {
-            if (AIMMode && fp._input.move != Vector2.zero)
+            if (AIMMode && fp._input.move != Vector2.zero && !Input.GetKey(KeyCode.LeftShift))
             {
                 anim.SetBool("AIMWalk", true);
                 anim.SetBool("AIMMode", false);
-
+                anim.SetBool("AimRun", false);             
             }
             else if (AIMMode && fp._input.move == Vector2.zero)
             {
                 anim.SetBool("AIMWalk", false);
                 anim.SetBool("AIMMode", true);
-
+                anim.SetBool("AimRun", false);
+            }else if (AIMMode && fp._input.move != Vector2.zero && Input.GetKey(KeyCode.LeftShift))
+            {
+                anim.SetBool("AIMWalk", false);
+                anim.SetBool("AIMMode", false);
+                anim.SetBool("AimRun", true);
             }
         }
     }
@@ -161,8 +166,9 @@ public class PlayerLogic : MonoBehaviour
                 {
                     AIMMode = true;
                     anim.SetBool("AIMMode", true);
+
                 }
-            }
+            } 
         }
     }
 

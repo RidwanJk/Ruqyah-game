@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
             Logic.enabled = false;
             kameracol.enabled = true;
             kameraRoot.useGravity = true;    
-            PlayerCapsul.enabled = false;          
+                
 
         }
         if (Input.GetKeyDown(KeyCode.P))

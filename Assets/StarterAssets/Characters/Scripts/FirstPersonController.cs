@@ -23,6 +23,7 @@ namespace StarterAssets
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
 		private Animator anim;
+		public PlayerLogic playerLogic;
 
         [Space(10)]
 		[Tooltip("The height the player can jump")]
@@ -240,20 +241,29 @@ namespace StarterAssets
 				}
 
 				// Jump
-				if (_input.jump && _jumpTimeoutDelta <= 0.0f)
-				{
-                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+				if (_input.jump && _jumpTimeoutDelta <= 0.0f &&  !playerLogic.AIMMode)
+				{                    
                     anim.SetBool("Jump", true);
                     anim.SetBool("AIMWalk", false);
                     anim.SetBool("AIMMode", false);
-					Grounded = false;
+                    anim.SetBool("AimRun", false);
+                    Grounded = false;
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-				}
+				} else if (_input.jump && _jumpTimeoutDelta <= 0.0f && playerLogic.AIMMode)
+				{
+                    anim.SetBool("TorchJump", true);
+                    anim.SetBool("AIMWalk", false);
+                    anim.SetBool("AIMMode", false);
+                    anim.SetBool("AimRun", false);
+                    Grounded = false;
+                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                }
 
 				// jump timeout
 				if (_jumpTimeoutDelta >= 0.0f)
 				{
                     anim.SetBool("Jump", false);
+                    anim.SetBool("TorchJump", false);
                     Grounded = true;
                     _jumpTimeoutDelta -= Time.deltaTime;
 				}
