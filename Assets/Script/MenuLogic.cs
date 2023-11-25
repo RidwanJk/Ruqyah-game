@@ -32,7 +32,7 @@ public class MenuLogic : MonoBehaviour
     public void TampilkanPanelCredit()
     {
         panelUtama.SetActive(false);
-        panelOpsi.SetActive(true);
+        panelCredit.SetActive(true);
     }
     // Metode untuk keluar dari game
     public void KeluarDariGame()
