@@ -127,41 +127,44 @@ public class PlayerLogic : MonoBehaviour
 
     public void equip(FirstPersonController fp)
     {
-
         if (fp.Grounded)
         {
-            if (AIMMode && fp._input.move != Vector2.zero && !Input.GetKey(KeyCode.LeftShift))
+            if (AIMMode)
             {
-                anim.SetBool("AIMWalk", true);
-                anim.SetBool("AIMMode", false);
-                anim.SetBool("AimRun", false);             
-            }
-            else if (AIMMode && fp._input.move == Vector2.zero)
-            {
-                anim.SetBool("AIMWalk", false);
-                anim.SetBool("AIMMode", true);
-                anim.SetBool("AimRun", false);
-            }else if (AIMMode && fp._input.move != Vector2.zero && Input.GetKey(KeyCode.LeftShift))
-            {
-                anim.SetBool("AIMWalk", false);
-                anim.SetBool("AIMMode", false);
-                anim.SetBool("AimRun", true);
-            }
+                if (fp._input.move != Vector2.zero && !fp._input.sprint)
+                {
+                    anim.SetBool("AIMWalk", true);
+                    anim.SetBool("AIMMode", false);
+                    anim.SetBool("AimRun", false);
+                }               
+                else if (fp._input.move != Vector2.zero && fp._input.sprint)
+                {
+                    anim.SetBool("AIMWalk", false);
+                    anim.SetBool("AIMMode", false);
+                    anim.SetBool("AimRun", true);
+                }
+                else if (fp._input.move == Vector2.zero)
+                {
+                    anim.SetBool("AIMWalk", false);
+                    anim.SetBool("AIMMode", true);
+                    anim.SetBool("AimRun", false);
+                }
+            }         
         }
     }
 
     public void EquipWeapon(FirstPersonController fp)
     {
         if (fp.Grounded)
-        {
-
-            
+        {            
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 if (AIMMode)
                 {
                     AIMMode = false;
                     anim.SetBool("AIMMode", false);
+                    anim.SetBool("AIMWalk", false);
+                    anim.SetBool("AimRun", false);
                 }
                 else if (!AIMMode)
                 {

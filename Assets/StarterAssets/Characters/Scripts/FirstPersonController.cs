@@ -204,13 +204,30 @@ namespace StarterAssets
 					inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 					if (_input.sprint)
 					{
-						anim.SetBool("Run", true);
-						anim.SetBool("Walk", false);
+						if (playerLogic.AIMMode)
+						{
+							anim.SetBool("AimRun", true);
+							anim.SetBool("AIMWalk", false);
+						}
+						else
+						{
+							anim.SetBool("Run", true);
+							anim.SetBool("Walk", false);
+						}	
+						
 					}
 					else
 					{
-						anim.SetBool("Walk", true);
-						anim.SetBool("Run", false);
+						if (playerLogic.AIMMode)
+						{
+							anim.SetBool("AIMWalk", true);
+							anim.SetBool("AimRun", false);
+						}
+						else
+						{
+                        anim.SetBool("Walk", true);
+                        anim.SetBool("Run", false);
+                    }
 					}
 				}
 				else

@@ -13,6 +13,7 @@ TagManager:
   - Key
   - Al-Quran
   - tasbih
+  - surah
   layers:
   - Default
   - TransparentFX

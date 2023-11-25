@@ -16626,7 +16626,7 @@ GameObject:
   - component: {fileID: 1889564242}
   m_Layer: 0
   m_Name: Surah Drop (1)
-  m_TagString: Untagged
+  m_TagString: surah
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17324,7 +17324,7 @@ GameObject:
   - component: {fileID: 1993356989}
   m_Layer: 0
   m_Name: Surah Drop (2)
-  m_TagString: Untagged
+  m_TagString: surah
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18104,7 +18104,7 @@ GameObject:
   - component: {fileID: 6316182151661002932}
   m_Layer: 0
   m_Name: Surah Drop
-  m_TagString: Untagged
+  m_TagString: surah
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
