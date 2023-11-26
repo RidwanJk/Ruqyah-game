@@ -21,6 +21,7 @@ public class MenuLogic : MonoBehaviour
     {
         panelUtama.SetActive(true);
         panelOpsi.SetActive(false);
+        panelCredit.SetActive(false);
     }
 
     // Metode untuk menampilkan panel opsi
