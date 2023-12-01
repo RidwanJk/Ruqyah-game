@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class MenuLogic : MonoBehaviour
@@ -9,6 +10,7 @@ public class MenuLogic : MonoBehaviour
     public GameObject panelUtama;
     public GameObject panelOpsi;
     public GameObject panelCredit;
+    public AudioMixer audioMixer;
 
     // Metode untuk pindah ke scene
     public void PindahScene(string sceneName)
@@ -39,5 +41,10 @@ public class MenuLogic : MonoBehaviour
     public void KeluarDariGame()
     {
         Application.Quit();
+    }
+    
+    public void MasterVolume (float volume)
+    {
+        audioMixer.SetFloat("Volume", volume);
     }
 }

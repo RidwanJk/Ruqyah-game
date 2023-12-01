@@ -16,8 +16,11 @@ public class GameManager : MonoBehaviour
     public AudioSource pauseSoundAudioSource;
     public GameObject pauseMenuUI; // Reference to your pause menu UI Canvas
     bool GameHasEnded = false;
-    public GameObject GameOverMenu;
+    public GameObject GameOverL;
+    public GameObject GameOverW;
+    public GameObject GameOver;
     public PlayerLogic Logic;
+    public EnemyLogic EnemyLogic;
     public Rigidbody kameraRoot;
     public Collider kameracol;
     public Collider PlayerCapsul;
@@ -58,20 +61,26 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //handeling death
+        //handeling death game result
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {            
             Invoke("PauseGame",0.5f);                        
-            GameOverMenu.SetActive(true);
+            GameOverL.SetActive(true);
             Cursor.lockState = CursorLockMode.Confined;
             GameHasEnded = true;
             isPaused = true;
             Logic.enabled = false;
             kameracol.enabled = true;
-            kameraRoot.useGravity = true;    
-                
-
+            kameraRoot.useGravity = true;                    
         }
+        else if (EnemyLogic.hitPoints <= 0 && isPaused == false)
+        {
+            Invoke("PauseGame", 10f);                       
+            GameHasEnded = true;
+            isPaused = true;
+            Logic.enabled = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
@@ -113,7 +122,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true; 
         Logic.hitscreen.SetActive(false);
-     
+        
 
         // Disable the camera input action
         if (cameraInputActionReference != null)
@@ -132,14 +141,19 @@ public class GameManager : MonoBehaviour
         {
             pauseSoundAudioSource.Play();
         }
-
-        // Show the pause menu
-        if (pauseMenuUI != null && Logic.Hitpoint > 0)
+       
+        if (pauseMenuUI != null && Logic.Hitpoint > 0 && GameHasEnded != true)
         {
             pauseMenuUI.SetActive(true);
         }
-        else if (Logic.Hitpoint <= 0)
+        else if (Logic.Hitpoint <= 0 && GameHasEnded == true)
         {
+            GameOverL.SetActive(true);
+            pauseMenuUI.SetActive(false);
+        }
+        else if (EnemyLogic.hitPoints <= 0 && GameHasEnded == true)
+        {
+            GameOverW.SetActive(true);
             pauseMenuUI.SetActive(false);
         }
 
@@ -184,7 +198,7 @@ public class GameManager : MonoBehaviour
         if (GameHasEnded == true)
         {
             GameHasEnded = true;
-            GameOverMenu.SetActive(true);
+            GameOver.SetActive(true);
             Restart();
             Debug.Log("Restarting");
         }

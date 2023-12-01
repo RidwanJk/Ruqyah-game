@@ -269,9 +269,7 @@ namespace StarterAssets
 				} else if (_input.jump && _jumpTimeoutDelta <= 0.0f && playerLogic.AIMMode)
 				{
                     anim.SetBool("TorchJump", true);
-                    anim.SetBool("AIMWalk", false);
-                    anim.SetBool("AIMMode", false);
-                    anim.SetBool("AimRun", false);
+                  
                     Grounded = false;
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
                 }

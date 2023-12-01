@@ -127,6 +127,7 @@ public class PlayerLogic : MonoBehaviour
 
     public void equip(FirstPersonController fp)
     {
+        
         if (fp.Grounded)
         {
             if (AIMMode)
@@ -150,6 +151,12 @@ public class PlayerLogic : MonoBehaviour
                     anim.SetBool("AimRun", false);
                 }
             }         
+        }
+        else
+        {
+            anim.SetBool("AIMWalk", false);
+            anim.SetBool("AIMMode", false);
+            anim.SetBool("AimRun", false);
         }
     }
 
@@ -218,25 +225,36 @@ public class PlayerLogic : MonoBehaviour
 
     private void Shoot()
     {
+        int rayCount = 10; // Number of rays to shoot in the cone
+        float coneAngle = 30f; // Angle of the cone in degrees
+        float range = 10f; // Maximum range of the cone
 
-        RaycastHit hit;
-        if (Physics.Raycast(ShootCamera.transform.position, ShootCamera.transform.forward, out hit, range))
-        {            
-            Debug.Log("Gotchaa!" + hit.transform.name);
-            if (hit.transform.tag.Equals("Enemy"))
+        for (int i = 0; i < rayCount; i++)
+        {
+            float angleX = (i / (float)rayCount) * coneAngle - coneAngle / 2f;
+            float angleZ = (i / (float)rayCount) * coneAngle - coneAngle / 2f;
+
+            for (int j = 0; j < rayCount; j++)
             {
+                float angleY = (j / (float)rayCount) * coneAngle - coneAngle / 2f; // Calculate Y-axis angle for this ray
 
-                EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
-                target.TakeDamage(50);
+                Vector3 direction = Quaternion.Euler(-angleX, angleY, angleZ) * ShootCamera.transform.forward; // Calculate direction
 
+                RaycastHit hit;
+                if (Physics.Raycast(ShootCamera.transform.position, direction, out hit, range))
+                {
+                    Debug.Log("Gotchaa!" + hit.transform.name);
+                    if (hit.transform.CompareTag("Enemy"))
+                    {
+                        EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
+                        target.TakeDamage(50);
+                    }
+                }
+                Debug.DrawRay(ShootCamera.transform.position, direction * range, Color.blue, 5f);
             }
         }
-        else
-        {
-            return;
-        }
-
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
