@@ -100,8 +100,12 @@ public class MazeLogic : MonoBehaviour
                 int x = Random.Range(0, width);
                 int z = Random.Range(0, depth);
                 if (map[x, z] == 0 && !PlayerSet)
+<<<<<<< Updated upstream
                 {
                     Debug.Log("Placing Character");
+=======
+                {                    
+>>>>>>> Stashed changes
                     PlayerSet = true;
                     Character.transform.position = new Vector3(x * scale, -2.442f, z * scale);
                 }

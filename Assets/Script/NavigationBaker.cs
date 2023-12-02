@@ -27,5 +27,9 @@ public class NavigationBaker : MonoBehaviour
         {
             surfaces[i].BuildNavMesh();
         }
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
     }
 }
