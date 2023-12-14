@@ -48,6 +48,7 @@ public class PlayerLogic : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] float range = 1000f;
+    [SerializeField] public ParticleSystem ps;
     NavMeshAgent enemyagent;
     CameraShake cshake;
     Rigidbody rbnyaeffect;
@@ -111,13 +112,15 @@ public class PlayerLogic : MonoBehaviour
             {
                 PlayerAudio.clip = ShootAudio;
                 PlayerAudio.Stop();
+                
+            
                 ExecuteChargeAttack();
                 isCharging = false;
-                chargeDuration = 0f; // Reset charge duration after releasing the mouse button
+                chargeDuration = 0f; 
             }
         }
 
-        /*ShootAnimation();*/
+        
 
         float moveInput = Input.GetAxis("Horizontal") + Input.GetAxis("Vertical");
         if (Mathf.Abs(moveInput) > 0)
@@ -275,8 +278,8 @@ public class PlayerLogic : MonoBehaviour
             
             Shoot(calculatedDamage);
 
-            anim.SetBool("Shoot", true); 
-
+            anim.SetBool("Shoot", true);
+            ps.Play();
             StartCoroutine(ResetShootAnimation());
         }
     }
