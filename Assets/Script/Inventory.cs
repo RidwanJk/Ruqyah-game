@@ -19,11 +19,11 @@ public class Inventory : MonoBehaviour
     {
         if (!isopen)
         {
-            // Check for item pickup when inventory is not open
+            
             if (Input.GetKeyDown(KeyCode.E))
             {                           
                 TryPickupItem();
-                Logic.anim.SetTrigger("Loot");
+                
             }
         }
 
@@ -55,6 +55,9 @@ public class Inventory : MonoBehaviour
             if (hit.transform.tag.Equals("Al-Quran"))
             {
                 Logic.quran++;
+                Logic.SFXsource.clip = Logic.Loot;
+                Logic.SFXsource.time = 0.5f;
+                Logic.SFXsource.Play();
                 Destroy(hit.collider.gameObject);
                 Debug.Log("quran: "+Logic.quran);
 
@@ -62,12 +65,18 @@ public class Inventory : MonoBehaviour
             else if (hit.transform.tag.Equals("surah"))
             {
                 Logic.surah++;
+                Logic.SFXsource.clip = Logic.Loot;
+                Logic.SFXsource.time = 0.5f;
+                Logic.SFXsource.Play();
                 Destroy(hit.collider.gameObject);
                 Debug.Log("surah: " + Logic.surah);
             }
             else if (hit.transform.tag.Equals("tasbih"))
             {
                 Logic.tasbih++;
+                Logic.SFXsource.clip = Logic.Loot;
+                Logic.SFXsource.time = 0.5f;
+                Logic.SFXsource.Play();
                 Destroy(hit.collider.gameObject);
                 Debug.Log("tasbih: " + Logic.tasbih);
             }

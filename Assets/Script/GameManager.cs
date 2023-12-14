@@ -28,18 +28,24 @@ public class GameManager : MonoBehaviour
     public GameObject mc;
     public GameObject tutorkak;
     LeanWindow window;
+    public LeanWindow tutor2;
+    public LeanWindow Misi;
+    private bool hasPlayedMisiSound = false;
 
-   
+
     void Start()
     {
         var canvasnya = tutorkak.GetComponentInChildren<Canvas>();
         var modal = canvasnya.GetComponent<Canvas>();
         var modalwindow = modal.GetComponentInChildren<LeanWindow>();
         window = modalwindow;
-        window.TurnOn();    
+        window.TurnOn();
+        StartCoroutine(waiter1());
+        
+      
 
-        // Lock and hide cursor at the start of the game
-        Cursor.lockState = CursorLockMode.Locked;
+            // Lock and hide cursor at the start of the game
+            Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         // Assuming you have an AudioSource component attached to the same GameObject
@@ -58,7 +64,24 @@ public class GameManager : MonoBehaviour
             pauseMenuUI.SetActive(false); // Ensure the pause menu is initially hidden
         }
     }
+    IEnumerator waiter1()
+    {
+        yield return new WaitForSeconds(5);
 
+        tutor2.TurnOn();
+        Logic.SFXsource.clip = Logic.Pengumuman;
+        Logic.SFXsource.Play();
+        yield return new WaitForSeconds(2);
+        tutor2.TurnOff();
+    }
+    IEnumerator waiter2()
+    {
+        Misi.TurnOn();
+        Logic.SFXsource.clip = Logic.Pengumuman;
+        Logic.SFXsource.Play();
+        yield return new WaitForSeconds(2);
+        Misi.TurnOff();
+    }
     void Update()
     {
         //handeling death game result
@@ -88,6 +111,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             window.TurnOn();
+        }
+        if (Logic.quran == 1 && Logic.surah == 3 && !hasPlayedMisiSound)
+        {
+            StartCoroutine(waiter2());
+            hasPlayedMisiSound = true; 
         }
     }
 

@@ -16,8 +16,14 @@ public class PlayerLogic : MonoBehaviour
     public AudioClip ShootAudio;
     public AudioClip StepAudio;
     public AudioClip DeathAudio;
-    AudioSource PlayerAudio;
+    public AudioClip Usir;
+    public AudioClip Loot;
+    public AudioClip Pengumuman;
+    public AudioSource PlayerAudio;
+    public AudioSource SFXsource;
+    public AudioSource ShootSource;
 
+    [Header("Core")]
     public GameObject Enemy;
     public bool AIMMode = false;
     public Animator anim;
@@ -32,6 +38,7 @@ public class PlayerLogic : MonoBehaviour
     public int lentera = 0;
     public int fullItem = 0;
     public int counter = 0;
+    public Light lampu;
 
     public bool isTasbih = false;
     public bool isLentera = false;
@@ -39,13 +46,17 @@ public class PlayerLogic : MonoBehaviour
 
     public List<GameObject> item;
 
+    [Header("VFX")]
     [SerializeField] float range = 1000f;
     NavMeshAgent enemyagent;
     CameraShake cshake;
     Rigidbody rbnyaeffect;
     public GameObject hitscreen;
-
-    // private bool isWalking = false;
+    public UIGameplayLogic UIGameplay;
+    bool isCharging = false;
+    float chargeDuration = 0f;
+    float maxChargeDuration = 10f;
+    
 
     void Start()
     {
@@ -54,6 +65,7 @@ public class PlayerLogic : MonoBehaviour
         enemyagent = Enemy.GetComponent<NavMeshAgent>();
         cshake = this.GetComponent<CameraShake> ();
         rbnyaeffect = cameffect.GetComponent<Rigidbody>();
+        UIGameplay.UpdateHealth(Hitpoint, 150);
     }
 
     void Update()
@@ -73,11 +85,40 @@ public class PlayerLogic : MonoBehaviour
         equip(fp);
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Shoot();
+            isCharging = true;
+            PlayerAudio.clip = ShootAudio;
+            PlayerAudio.Play();
         }
 
-        ShootAnimation();
-        // Check for player input to determine if the character is walking.
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            if (isCharging)
+            {
+                chargeDuration += Time.deltaTime;
+
+                //  display charging effects
+                
+                if (chargeDuration >= maxChargeDuration)
+                {
+                    chargeDuration = maxChargeDuration;
+                    ExecuteChargeAttack();
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            if (isCharging)
+            {
+                PlayerAudio.clip = ShootAudio;
+                PlayerAudio.Stop();
+                ExecuteChargeAttack();
+                isCharging = false;
+                chargeDuration = 0f; // Reset charge duration after releasing the mouse button
+            }
+        }
+
+        /*ShootAnimation();*/
+
         float moveInput = Input.GetAxis("Horizontal") + Input.GetAxis("Vertical");
         if (Mathf.Abs(moveInput) > 0)
         {
@@ -103,6 +144,7 @@ public class PlayerLogic : MonoBehaviour
         gethurt();
        
         Hitpoint = Hitpoint - damage;
+        UIGameplay.UpdateHealth(Hitpoint, 150);
         cshake.shakeDuration = 0.5f;
         anim.SetTrigger("GetHit");
         if (Hitpoint <= 0)
@@ -192,7 +234,8 @@ public class PlayerLogic : MonoBehaviour
                 isLentera = true;
                 isTasbih = false;
                 isQuran = false;
-
+                
+                lampu.intensity = 2;
                 item[0].SetActive(true);
                 item[1].SetActive(false);
                 item[2].SetActive(false);
@@ -203,6 +246,7 @@ public class PlayerLogic : MonoBehaviour
                 isTasbih = true;
                 isQuran = false;
 
+                lampu.intensity = 1;
                 item[0].SetActive(false);
                 item[1].SetActive(true);
                 item[2].SetActive(false);
@@ -213,8 +257,8 @@ public class PlayerLogic : MonoBehaviour
             {
                 isLentera = false;
                 isTasbih = false;
-                isQuran = true;
-
+                isQuran = true;              
+                lampu.intensity = 1;
                 item[0].SetActive(false);
                 item[1].SetActive(false);
                 item[2].SetActive(true);
@@ -222,38 +266,43 @@ public class PlayerLogic : MonoBehaviour
         }
        
     }
-
-    private void Shoot()
+    void ExecuteChargeAttack()
     {
-        int rayCount = 10; // Number of rays to shoot in the cone
-        float coneAngle = 30f; // Angle of the cone in degrees
-        float range = 10f; // Maximum range of the cone
-
-        for (int i = 0; i < rayCount; i++)
+        if (isCharging)
         {
-            float angleX = (i / (float)rayCount) * coneAngle - coneAngle / 2f;
-            float angleZ = (i / (float)rayCount) * coneAngle - coneAngle / 2f;
+            float maxDamage = 50f;
+            float calculatedDamage = maxDamage * Mathf.Clamp01(chargeDuration / maxChargeDuration);
+            
+            Shoot(calculatedDamage);
 
-            for (int j = 0; j < rayCount; j++)
-            {
-                float angleY = (j / (float)rayCount) * coneAngle - coneAngle / 2f; // Calculate Y-axis angle for this ray
+            anim.SetBool("Shoot", true); 
 
-                Vector3 direction = Quaternion.Euler(-angleX, angleY, angleZ) * ShootCamera.transform.forward; // Calculate direction
-
-                RaycastHit hit;
-                if (Physics.Raycast(ShootCamera.transform.position, direction, out hit, range))
-                {
-                    Debug.Log("Gotchaa!" + hit.transform.name);
-                    if (hit.transform.CompareTag("Enemy"))
-                    {
-                        EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
-                        target.TakeDamage(50);
-                    }
-                }
-                Debug.DrawRay(ShootCamera.transform.position, direction * range, Color.blue, 5f);
-            }
+            StartCoroutine(ResetShootAnimation());
         }
     }
+
+
+    private void Shoot(float damage)
+    {
+        Debug.Log("shoot" + damage);
+        float range = 10f;
+        Vector3 direction = ShootCamera.transform.forward;
+        RaycastHit hit;
+
+        if (Physics.Raycast(ShootCamera.transform.position, direction, out hit, range))
+        {
+            if (hit.transform.CompareTag("Enemy"))
+            {
+               
+                EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
+                target.TakeDamage(damage);
+            }
+        }
+
+        Debug.DrawRay(ShootCamera.transform.position, direction * range, Color.blue, 5f);
+    }
+
+
 
     private void OnDrawGizmos()
     {
@@ -261,19 +310,10 @@ public class PlayerLogic : MonoBehaviour
         Vector3 direction = ShootCamera.transform.TransformDirection(Vector3.forward) * range;
         Gizmos.DrawRay(ShootCamera.transform.position, direction);
     }
-
-    //ditaruh di keals senjata
-    private void ShootAnimation()
+    IEnumerator ResetShootAnimation()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {        
-                anim.SetBool("IdleShoot", true);
-                anim.SetBool("WalkShoot", false);            
-        }
-        else
-        {
-            anim.SetBool("IdleShoot", false);
-            anim.SetBool("WalkShoot", false);
-        }
+        yield return new WaitForSeconds(2);
+        anim.SetBool("Shoot", false); // Reset the charge attack animation state
     }
+
 }
