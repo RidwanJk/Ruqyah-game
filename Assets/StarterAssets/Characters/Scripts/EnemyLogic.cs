@@ -74,10 +74,10 @@ public class EnemyLogic : MonoBehaviour
             if (DistancetoTarget <= ChaseRange && hitPoints != 0)
             {
                 FaceTarget(target.position);
-                if (DistancetoTarget > agent.stoppingDistance + 2f)
+                if (DistancetoTarget > agent.stoppingDistance + 0.5f)
                 {
                     ChaseTarget();
-               
+                               
                 }
                 else if (DistancetoTarget <= agent.stoppingDistance)
                 {
@@ -85,7 +85,7 @@ public class EnemyLogic : MonoBehaviour
 
             }
         }
-            else if (DistancetoTarget >= ChaseRange * 2)
+            else if (DistancetoTarget >= ChaseRange + 2f)
             {
 
                 playingalready = false;
@@ -129,8 +129,7 @@ public class EnemyLogic : MonoBehaviour
 
     private void SetNextDestination()
     {
-        anim.SetBool("Run", true);
-        // Set the destination of the agent to the position of the current waypoint
+        anim.SetBool("Run", true);        
         if (waypoints != null && waypoints.Length > 0)
         {
             agent.SetDestination(waypoints[currentWaypoint].position);
@@ -138,10 +137,9 @@ public class EnemyLogic : MonoBehaviour
             // Increment currentWaypoint by 1
             currentWaypoint++;
 
-            // Check if currentWaypoint is equal to the length of the waypoints array
             if (currentWaypoint == waypoints.Length)
             {
-                // If it is, reset currentWaypoint to 0
+                
                 currentWaypoint = 0;
             }
         }
@@ -164,14 +162,15 @@ public class EnemyLogic : MonoBehaviour
 
             PL.counter++;
 
-            if (PL.counter <= 2) 
+            if (PL.counter <= 3) 
             {
-                var x = Random.Range(1, 20);
-                agent.transform.position = (waypoints[x].position);
-                Debug.Log(PL.counter);
-                 if (PL.counter == 2)
-                {
-                    
+                var x = Random.Range(0, 19);
+                agent.transform.position = waypoints[x].position;
+                agent.ResetPath();
+                Debug.Log(x);
+                
+                 if (PL.counter == 3)
+                {                    
                     PL.anim.SetBool("AIMMode", false);
                     PL.AIMMode = false;
                     PL.isTasbih = false;    

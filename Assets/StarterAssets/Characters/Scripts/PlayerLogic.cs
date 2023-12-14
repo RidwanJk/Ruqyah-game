@@ -87,8 +87,8 @@ public class PlayerLogic : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             isCharging = true;
-            PlayerAudio.clip = ShootAudio;
-            PlayerAudio.Play();
+            ShootSource.clip = ShootAudio;
+            ShootSource.Play();
         }
 
         if (Input.GetKey(KeyCode.Mouse0))
@@ -110,8 +110,8 @@ public class PlayerLogic : MonoBehaviour
         {
             if (isCharging)
             {
-                PlayerAudio.clip = ShootAudio;
-                PlayerAudio.Stop();
+                ShootSource.clip = ShootAudio;
+                ShootSource.Stop();
                 
             
                 ExecuteChargeAttack();
@@ -237,18 +237,18 @@ public class PlayerLogic : MonoBehaviour
                 isLentera = true;
                 isTasbih = false;
                 isQuran = false;
-                
+                    
                 lampu.intensity = 2;
                 item[0].SetActive(true);
                 item[1].SetActive(false);
                 item[2].SetActive(false);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && tasbih == 1 && counter < 2)
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && tasbih == 1 && counter < 3)
             {
                 isLentera = false;
                 isTasbih = true;
                 isQuran = false;
-
+              
                 lampu.intensity = 1;
                 item[0].SetActive(false);
                 item[1].SetActive(true);
@@ -260,7 +260,8 @@ public class PlayerLogic : MonoBehaviour
             {
                 isLentera = false;
                 isTasbih = false;
-                isQuran = true;              
+                isQuran = true;
+               
                 lampu.intensity = 1;
                 item[0].SetActive(false);
                 item[1].SetActive(false);
@@ -279,7 +280,7 @@ public class PlayerLogic : MonoBehaviour
             Shoot(calculatedDamage);
 
             anim.SetBool("Shoot", true);
-            ps.Play();
+            
             StartCoroutine(ResetShootAnimation());
         }
     }
@@ -296,8 +297,8 @@ public class PlayerLogic : MonoBehaviour
         {
             if (hit.transform.CompareTag("Enemy"))
             {
-               
-                EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
+                VFXShoot();
+                 EnemyLogic target = hit.transform.GetComponent<EnemyLogic>();
                 target.TakeDamage(damage);
             }
         }
@@ -318,5 +319,17 @@ public class PlayerLogic : MonoBehaviour
         yield return new WaitForSeconds(2);
         anim.SetBool("Shoot", false); // Reset the charge attack animation state
     }
-
+    
+    private void VFXShoot()
+    {
+        if (AIMMode)
+        {
+            if (isQuran || isTasbih)
+            {
+                ps.Play();
+            }
+        }
+             
+    }
+    
 }
