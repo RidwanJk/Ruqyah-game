@@ -88,8 +88,8 @@ public class GameManager : MonoBehaviour
         if (Logic.Hitpoint <= 0 && isPaused == false)
         {            
             Invoke("PauseGame",0.5f);                        
-            GameOverL.SetActive(true);
-            Cursor.lockState = CursorLockMode.Confined;
+           /* GameOverL.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;*/
             GameHasEnded = true;
             isPaused = true;
             Logic.enabled = false;
@@ -150,29 +150,16 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true; 
         Logic.hitscreen.SetActive(false);
+        cameraInputActionReference.action.Disable();
+        musicAudioSource.Pause();
+        pauseSoundAudioSource.Play();
         
-
-        // Disable the camera input action
-        if (cameraInputActionReference != null)
-        {
-            cameraInputActionReference.action.Disable();
-        }
-
-        // Pause the music
-        if (musicAudioSource != null)
-        {
-            musicAudioSource.Pause();
-        }
-
-        // Play the pause sound
-        if (pauseSoundAudioSource != null)
-        {
-            pauseSoundAudioSource.Play();
-        }
        
-        if (pauseMenuUI != null && Logic.Hitpoint > 0 && GameHasEnded != true)
+        if (pauseMenuUI != null && Logic.Hitpoint > 0 && GameHasEnded != true && EnemyLogic.hitPoints > 0)
         {
             pauseMenuUI.SetActive(true);
+            GameOverL.SetActive(false);
+            GameOverW.SetActive(false);
         }
         else if (Logic.Hitpoint <= 0 && GameHasEnded == true)
         {
